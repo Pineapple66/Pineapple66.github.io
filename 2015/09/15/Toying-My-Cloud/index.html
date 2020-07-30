@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/Maple152x152.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Maple32x32.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Maple6x16.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"pineapple66.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="My Cloud™ Home is an easy-to-use personal cloud storage device that plugs directly into your router at home so you can save all your digital content in one central place. Unlike a NAS, it’s a simple c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Toying My Cloud">
+<meta property="og:url" content="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/index.html">
+<meta property="og:site_name" content="Professor Wu&#39;s DMZ">
+<meta property="og:description" content="My Cloud™ Home is an easy-to-use personal cloud storage device that plugs directly into your router at home so you can save all your digital content in one central place. Unlike a NAS, it’s a simple c">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/SSH_config.jpg">
+<meta property="og:image" content="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/3.png">
+<meta property="og:image" content="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/4.png">
+<meta property="og:image" content="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/6.png">
+<meta property="og:image" content="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/5.png">
+<meta property="og:image" content="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/1.png">
+<meta property="og:image" content="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/2.png">
+<meta property="og:image" content="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/7.png">
+<meta property="og:image" content="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/8.jfif">
+<meta property="article:published_time" content="2015-09-15T05:34:33.000Z">
+<meta property="article:modified_time" content="2020-07-30T04:28:29.640Z">
+<meta property="article:author" content="Professor Wu">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="NAS">
+<meta property="article:tag" content="TCP&#x2F;IP">
+<meta property="article:tag" content="WireShark">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/SSH_config.jpg">
+
+<link rel="canonical" href="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Toying My Cloud | Professor Wu's DMZ</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-83434037-2"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-83434037-2');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Professor Wu's DMZ</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Make user powerful again</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Pineapple66" class="github-corner" title="Check me out on GitHub" aria-label="Check me out on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://pineapple66.github.io/2015/09/15/Toying-My-Cloud/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Professor Wu">
+      <meta itemprop="description" content="Share IT tips and tricks">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Professor Wu's DMZ">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Toying My Cloud
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-09-15 00:34:33" itemprop="dateCreated datePublished" datetime="2015-09-15T00:34:33-05:00">2015-09-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-29 23:28:29" itemprop="dateModified" datetime="2020-07-29T23:28:29-05:00">2020-07-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>My Cloud™ Home is an easy-to-use personal cloud storage device that plugs directly into your router at home so you can save all your digital content in one central place. Unlike a NAS, it’s a simple centralized solution to ….</p>
+<p>More detail  <a href="https://shop.westerndigital.com/products/cloud-storage/wd-my-cloud-home" target="_blank" rel="noopener">Click me to official site</a></p>
+<p>Instead of continue doing sales job today, we are going to take look at a few interests points.</p>
+<a id="more"></a>
+
+<h4 id="Interests-Points-1-OS-amp-SSH"><a href="#Interests-Points-1-OS-amp-SSH" class="headerlink" title="Interests Points 1 . OS &amp; SSH"></a>Interests Points 1 . OS &amp; SSH</h4><p>A computer product offers certain services it must a hardware and some software. Logging on with ssh or perform Nmap scanning will allow us to see what is in the back. After reviewing the official documentation online, we know that the default user is root with password Welc0me. In order to change that, we need to first turn on ssh access to My Cloud box.</p>
+<h5 id="Turn-On-SSH"><a href="#Turn-On-SSH" class="headerlink" title="Turn On SSH"></a>Turn On SSH</h5><p>Navigate to the settings page and turn ON  “SSH”</p>
+<img src="/2015/09/15/Toying-My-Cloud/SSH_config.jpg" class="">
+
+<h5 id="Change-Password"><a href="#Change-Password" class="headerlink" title="Change Password"></a>Change Password</h5><p>I was using windows environment on this demo, and putty was downloaded previously. Login by entering the IP address listed on the configuration page with the default password. Once you have login via Putty, issues the following commands to change the root password.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd root</span><br></pre></td></tr></table></figure>
+<h4 id="Interests-Points-2-SSH-key-file-login"><a href="#Interests-Points-2-SSH-key-file-login" class="headerlink" title="Interests Points 2 . SSH key file login"></a>Interests Points 2 . SSH key file login</h4><p>Since we know this is debian system, we can try to enable the ssh login via keys to harden the device. The reason of utilizing this method is my network condition, I was using the campus dorms room’s network, where I didn’t have control of anything, and we did have some students who loves “scanning” the network with brute-force attack..</p>
+<h5 id="Using-Key-Gen"><a href="#Using-Key-Gen" class="headerlink" title="Using Key-Gen"></a>Using Key-Gen</h5><p>Download and run the Putty key-gen from <a href="https://www.puttygen.com/" target="_blank" rel="noopener">Here</a>  </p>
+<h5 id="Generating-the-SSH-Key-Pairs"><a href="#Generating-the-SSH-Key-Pairs" class="headerlink" title="Generating the SSH Key Pairs"></a>Generating the SSH Key Pairs</h5><p>Click Generate on the key-gen software to start the processes. It will looks like this when it was completed.</p>
+<img src="/2015/09/15/Toying-My-Cloud/3.png" class="">
+
+<p>Save both your public key and private key somewhere save on your file sever, NEVER share your private key with anyone.</p>
+<h5 id="Import-SSH-key-into-the-box"><a href="#Import-SSH-key-into-the-box" class="headerlink" title="Import SSH key into the box"></a>Import SSH key into the box</h5><p>If you are continue using root to login, you may create a Directory /root/.ssh/authorized_keys with</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~&#x2F;.ssh</span><br><span class="line">touch ~&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
+<p>Once finished, open authorized_keys by</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi ~&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
+<p>copy and paste the public key to this file, save, and exit.</p>
+<img src="/2015/09/15/Toying-My-Cloud/4.png" class="">
+
+<p>You are done! This linux box is now support ssh key login.   </p>
+<img src="/2015/09/15/Toying-My-Cloud/6.png" class="">
+<img src="/2015/09/15/Toying-My-Cloud/5.png" class="">
+
+
+<h4 id="Interests-Points-3-Turn-ON-HTTPS-amp-amp-SFTP-connection-Failed"><a href="#Interests-Points-3-Turn-ON-HTTPS-amp-amp-SFTP-connection-Failed" class="headerlink" title="Interests Points 3 . Turn ON HTTPS &amp;&amp; SFTP connection - Failed"></a>Interests Points 3 . Turn ON HTTPS &amp;&amp; SFTP connection - Failed</h4><p>With the better understanding of this slim version of debian Linux,  we might be able to turn on the https and Sftp on this device. HTTP and FTP is used by default on this software version, which it is a security hazard. From a WireShark packet captured we can see the password was submitted and transferred with plain text.<br>HTTP</p>
+<img src="/2015/09/15/Toying-My-Cloud/1.png" class="">
+<p>FTP</p>
+<img src="/2015/09/15/Toying-My-Cloud/2.png" class="">
+
+<h5 id="It-is-NOT-supported-officially"><a href="#It-is-NOT-supported-officially" class="headerlink" title="It is NOT supported officially"></a>It is NOT supported officially</h5><p>Navigate to My Cloud web configuration page,  you will easily see the overall usage and FTP On &amp; OFF button…However, there is NO config or settings anywhere I can go and modify this settings, which provides this box no security feature.</p>
+<h4 id="Interests-Points-4-Misc"><a href="#Interests-Points-4-Misc" class="headerlink" title="Interests Points 4 . Misc"></a>Interests Points 4 . Misc</h4><p>After using Nmap and toying around the box, there is not much services (ports) that this box offers. with limited processing power available, the encrypt and decrypt processes could not be satisfied.<br>Since this is a debian box, tcpdump should still on there…</p>
+<img src="/2015/09/15/Toying-My-Cloud/7.png" class="">
+<img src="/2015/09/15/Toying-My-Cloud/8.jfif" class="">
+
+<p>it looks like they are using these dynamic port 49153 to receiving the data..</p>
+<h4 id="Updates-On-2016"><a href="#Updates-On-2016" class="headerlink" title="Updates On 2016"></a>Updates On 2016</h4><p>Right before sold this unit. I teared it down, it just a fan-less compute board with a 3TB WD RED hard drive inside, not sure about the processor model and amount of ram. This unit was sold in April 2016 due to lack of security, low transferring speed, and no redundancy options.  </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/NAS/" rel="tag"># NAS</a>
+              <a href="/tags/TCP-IP/" rel="tag"># TCP/IP</a>
+              <a href="/tags/WireShark/" rel="tag"># WireShark</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2017/10/29/ByPass-ASA-5505-Login-Password/" rel="next" title="ByPass ASA 5505 Login Password">
+      ByPass ASA 5505 Login Password <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Interests-Points-1-OS-amp-SSH"><span class="nav-number">1.</span> <span class="nav-text">Interests Points 1 . OS &amp; SSH</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Turn-On-SSH"><span class="nav-number">1.1.</span> <span class="nav-text">Turn On SSH</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Change-Password"><span class="nav-number">1.2.</span> <span class="nav-text">Change Password</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Interests-Points-2-SSH-key-file-login"><span class="nav-number">2.</span> <span class="nav-text">Interests Points 2 . SSH key file login</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Using-Key-Gen"><span class="nav-number">2.1.</span> <span class="nav-text">Using Key-Gen</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Generating-the-SSH-Key-Pairs"><span class="nav-number">2.2.</span> <span class="nav-text">Generating the SSH Key Pairs</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Import-SSH-key-into-the-box"><span class="nav-number">2.3.</span> <span class="nav-text">Import SSH key into the box</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Interests-Points-3-Turn-ON-HTTPS-amp-amp-SFTP-connection-Failed"><span class="nav-number">3.</span> <span class="nav-text">Interests Points 3 . Turn ON HTTPS &amp;&amp; SFTP connection - Failed</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#It-is-NOT-supported-officially"><span class="nav-number">3.1.</span> <span class="nav-text">It is NOT supported officially</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Interests-Points-4-Misc"><span class="nav-number">4.</span> <span class="nav-text">Interests Points 4 . Misc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Updates-On-2016"><span class="nav-number">5.</span> <span class="nav-text">Updates On 2016</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Professor Wu</p>
+  <div class="site-description" itemprop="description">Share IT tips and tricks</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Professor Wu</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

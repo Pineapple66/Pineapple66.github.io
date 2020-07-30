@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/Maple152x152.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Maple32x32.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Maple6x16.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"pineapple66.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Cisco Meraki enterprise network is a cloud-managed IT company, their product include wireless, switching, security, enterprise mobility management and security cameras, all centrally managed from the">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Meraki MR18 OpenWRT">
+<meta property="og:url" content="https://pineapple66.github.io/2019/02/15/Meraki-MR18-OpenWRT/index.html">
+<meta property="og:site_name" content="Professor Wu&#39;s DMZ">
+<meta property="og:description" content="Cisco Meraki enterprise network is a cloud-managed IT company, their product include wireless, switching, security, enterprise mobility management and security cameras, all centrally managed from the">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pineapple66.github.io/2019/02/15/Meraki-MR18-OpenWRT/1.png">
+<meta property="article:published_time" content="2019-02-16T03:30:28.000Z">
+<meta property="article:modified_time" content="2020-07-30T04:29:02.438Z">
+<meta property="article:author" content="Professor Wu">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Wireless">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pineapple66.github.io/2019/02/15/Meraki-MR18-OpenWRT/1.png">
+
+<link rel="canonical" href="https://pineapple66.github.io/2019/02/15/Meraki-MR18-OpenWRT/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Meraki MR18 OpenWRT | Professor Wu's DMZ</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-83434037-2"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-83434037-2');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Professor Wu's DMZ</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Make user powerful again</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Pineapple66" class="github-corner" title="Check me out on GitHub" aria-label="Check me out on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://pineapple66.github.io/2019/02/15/Meraki-MR18-OpenWRT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Professor Wu">
+      <meta itemprop="description" content="Share IT tips and tricks">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Professor Wu's DMZ">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Meraki MR18 OpenWRT
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-02-15 21:30:28" itemprop="dateCreated datePublished" datetime="2019-02-15T21:30:28-06:00">2019-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-29 23:29:02" itemprop="dateModified" datetime="2020-07-29T23:29:02-05:00">2020-07-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Cisco Meraki enterprise network is a cloud-managed IT company, their product include wireless, switching, security, enterprise mobility management and security cameras, all centrally managed from the web. Meraki MR18 offers great performance overall for small home/office deployments.</p>
+<p>However in order to using their product, we need to purchase a license for each devices, which does not work really well in the home environment. Thanks to the OpenWRT project, we are able to bring these Meraki equipment back to live.</p>
+<a id="more"></a>
+
+<p>This is a complete guide to flash OpenWRT firmware into a MR18 unit.</p>
+<p>All the firmware files, please navigate to OpenWRT official site for downloads <a href="https://openwrt.org/toh/meraki/mr18" target="_blank" rel="noopener">“Click Me”</a></p>
+<h4 id="Prerequisite"><a href="#Prerequisite" class="headerlink" title="Prerequisite"></a>Prerequisite</h4><ol>
+<li>MR18</li>
+<li>UART cable</li>
+<li>local HTTP server</li>
+<li>A router (extra one will be great, you need to keep this router offline during the whole flash process)</li>
+</ol>
+<p>Meraki device will try to upgrade their firmware as soon as they have internet access. Keep them offline.</p>
+<h4 id="Step-1-Connect-the-UART-port-and-power-on"><a href="#Step-1-Connect-the-UART-port-and-power-on" class="headerlink" title="Step 1 Connect the UART port and power on"></a>Step 1 Connect the UART port and power on</h4><p>Flip the unit over, remove the 4 rubber feet on the bottom to expose the screws. Remove these screws we will see the “Heart” of this AP unit.</p>
+<p>Grab your UART cable and connect these cable accordingly.</p>
+<img src="/2019/02/15/Meraki-MR18-OpenWRT/1.png" class="">
+
+<h4 id="Step-2-Locate-the-Version-Number-of-This-Device"><a href="#Step-2-Locate-the-Version-Number-of-This-Device" class="headerlink" title="Step 2 Locate the Version Number of This Device"></a>Step 2 Locate the Version Number of This Device</h4><p>With the UART cable plugged in, open your console and find the correct COM port and connect to it with the speed (baud) 115200</p>
+<p> While the device is booting, we can see something like this</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;Meraki&gt; odm fw_version</span><br><span class="line">24-201611211457-G69d4dc09-mantua</span><br></pre></td></tr></table></figure>
+<p>According to the official site, this version can flash with method C.</p>
+<h4 id="Step-3-Connect-your-MR18-to-Offline-Router"><a href="#Step-3-Connect-your-MR18-to-Offline-Router" class="headerlink" title="Step 3 Connect your MR18 to Offline Router"></a>Step 3 Connect your MR18 to Offline Router</h4><p>Grab your router and connect that with your MR18 and your laptop, make sure they are both located in the same network/vlan.</p>
+<h4 id="Step-4-Level-2-Reset-for-MR18"><a href="#Step-4-Level-2-Reset-for-MR18" class="headerlink" title="Step 4 Level 2 Reset for MR18"></a>Step 4 Level 2 Reset for MR18</h4><p>Hold the reset button on the MR18 for 10+ seconds. You should see the LED blink, and then turn off. Once the LED turns off you can stop holding the reset button. This does a “Level 2” reset and removes any configs from the access point.</p>
+<h4 id="Step-5-Prepare-Files-for-Flashing"><a href="#Step-5-Prepare-Files-for-Flashing" class="headerlink" title="Step 5 Prepare Files for Flashing"></a>Step 5 Prepare Files for Flashing</h4><p>Once the MR18 booted, start a HTTP server (on port 80) on your personal computer in the same directory as the firmware files. If you are running Linux like me, this can be done using the below example: I know, I know, python2 is longer supported..</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;servernetworktech.com&#x2F;uploads&#x2F;files&#x2F;MR18-LEDE.tar.gz</span><br><span class="line">tar xzvf .&#x2F;MR18-LEDE.tar.gz</span><br><span class="line">cd .&#x2F;MR18-LEDE&#x2F;</span><br><span class="line">sudo python2 -m SimpleHTTPServer 80</span><br></pre></td></tr></table></figure>
+<p>If you don’t have Python2 install, please use following command to perform the install.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python2</span><br></pre></td></tr></table></figure>
+<h4 id="Step-6-Load-the-firmware-to-MR18"><a href="#Step-6-Load-the-firmware-to-MR18" class="headerlink" title="Step 6 Load the firmware to MR18"></a>Step 6 Load the firmware to MR18</h4><p>Once HTTP server started, you can then load this image to the “part2” partition on the MR18. This is done with the following</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">odm firmware part2  192.168.1.10:80&#x2F;lede-ar71xx-nand-mr18-initramfs-kernel.bin</span><br></pre></td></tr></table></figure>
+<p>Note: Replace 192.168.1.10 with your laptop’s IP.</p>
+<p>If you do it correctly, you will see the following on the UART console window</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">&lt;Meraki&gt; odm firmware part2 192.168.1.248:80&#x2F;lede-ar71xx-nand-mr18-initramfs-kernel.bin</span><br><span class="line">Connecting to 20.10.1.248:80 (20.10.1.248:80)</span><br><span class="line">firmware.tmp         100% |*******************************|  7169k  0:00:00 ETA</span><br><span class="line">Erasing 128 Kibyte @ 7e0000 -- 100 % complete</span><br><span class="line">Writing data to block 0 at offset 0x0</span><br><span class="line">Writing data to block 1 at offset 0x20000</span><br><span class="line">Writing data to block 2 at offset 0x40000</span><br><span class="line">Writing data to block 3 at offset 0x60000</span><br><span class="line">Writing data to block 4 at offset 0x80000</span><br><span class="line">Writing data to block 5 at offset 0xa0000</span><br><span class="line">Writing data to block 6 at offset 0xc0000</span><br><span class="line">Writing data to block 7 at offset 0xe0000</span><br><span class="line">Writing data to block 8 at offset 0x100000</span><br><span class="line">Writing data to block 9 at offset 0x120000</span><br><span class="line">Writing data to block 10 at offset 0x140000</span><br><span class="line">Writing data to block 11 at offset 0x160000</span><br><span class="line">Writing data to block 12 at offset 0x180000</span><br><span class="line">Writing data to block 13 at offset 0x1a0000</span><br><span class="line">Writing data to block 14 at offset 0x1c0000</span><br><span class="line">Writing data to block 15 at offset 0x1e0000</span><br><span class="line">Writing data to block 16 at offset 0x200000</span><br><span class="line">Writing data to block 17 at offset 0x220000</span><br><span class="line">Writing data to block 18 at offset 0x240000</span><br><span class="line">Writing data to block 19 at offset 0x260000</span><br><span class="line">Writing data to block 20 at offset 0x280000</span><br><span class="line">Writing data to block 21 at offset 0x2a0000</span><br><span class="line">Writing data to block 22 at offset 0x2c0000</span><br><span class="line">Writing data to block 23 at offset 0x2e0000</span><br><span class="line">Writing data to block 24 at offset 0x300000</span><br><span class="line">Writing data to block 25 at offset 0x320000</span><br><span class="line">Writing data to block 26 at offset 0x340000</span><br><span class="line">Writing data to block 27 at offset 0x360000</span><br><span class="line">Writing data to block 28 at offset 0x380000</span><br><span class="line">Writing data to block 29 at offset 0x3a0000</span><br><span class="line">Writing data to block 30 at offset 0x3c0000</span><br><span class="line">Writing data to block 31 at offset 0x3e0000</span><br><span class="line">Writing data to block 32 at offset 0x400000</span><br><span class="line">Writing data to block 33 at offset 0x420000</span><br><span class="line">Writing data to block 34 at offset 0x440000</span><br><span class="line">Writing data to block 35 at offset 0x460000</span><br><span class="line">Writing data to block 36 at offset 0x480000</span><br><span class="line">Writing data to block 37 at offset 0x4a0000</span><br><span class="line">Writing data to block 38 at offset 0x4c0000</span><br><span class="line">Writing data to block 39 at offset 0x4e0000</span><br><span class="line">Writing data to block 40 at offset 0x500000</span><br><span class="line">Writing data to block 41 at offset 0x520000</span><br><span class="line">Writing data to block 42 at offset 0x540000</span><br><span class="line">Writing data to block 43 at offset 0x560000</span><br><span class="line">Writing data to block 44 at offset 0x580000</span><br><span class="line">Writing data to block 45 at offset 0x5a0000</span><br><span class="line">Writing data to block 46 at offset 0x5c0000</span><br><span class="line">Writing data to block 47 at offset 0x5e0000</span><br><span class="line">Writing data to block 48 at offset 0x600000</span><br><span class="line">Writing data to block 49 at offset 0x620000</span><br><span class="line">Writing data to block 50 at offset 0x640000</span><br><span class="line">Writing data to block 51 at offset 0x660000</span><br><span class="line">Writing data to block 52 at offset 0x680000</span><br><span class="line">Writing data to block 53 at offset 0x6a0000</span><br><span class="line">Writing data to block 54 at offset 0x6c0000</span><br><span class="line">Writing data to block 55 at offset 0x6e0000</span><br><span class="line">Writing data to block 56 at offset 0x700000</span><br><span class="line">Successfully updated part2 to 20.10.1.248:80&#x2F;lede-ar71xx-nand-mr18-initramfs-kernel.bin</span><br><span class="line">&lt;Meraki&gt;</span><br></pre></td></tr></table></figure>
+<p>If you don’t know which IP that Meraki gets, please login to your router and find out.</p>
+<h4 id="Step-7-Start-MR18-with-number-2-key-pressed"><a href="#Step-7-Start-MR18-with-number-2-key-pressed" class="headerlink" title="Step 7 Start MR18 with number 2 key pressed"></a>Step 7 Start MR18 with number 2 key pressed</h4><p>Once uploading was completed, remove power from the Meraki MR18. Now that power is removed, in your UART session hold down “2” on your keyboard while applying power. This should now boot you into the initramfs image you just flashed to the MR18.</p>
+<p>For the reason why “2” need to pressed and hold,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">5.974140] kmodloader: loading kernel modules from &#x2F;etc&#x2F;modules-boot.d&#x2F;*</span><br><span class="line">2[    5.983117] kmodloader: done loading kernel modules from &#x2F;etc&#x2F;modules-boot.d&#x2F;*</span><br><span class="line">[    5.991412] init: - preinit -</span><br><span class="line">2222222[    6.194014] IPv6: ADDRCONF(NETDEV_UP): eth0: link is not ready</span><br><span class="line">2Press the [f] key and hit [enter] to enter failsafe mode</span><br><span class="line">Press the [1], [2], [3] or [4] key and hit [enter] to select the debug level</span><br><span class="line">22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222[    9.320079] procd: - early -</span><br><span class="line">[    9.323075] procd: - watchdog -</span><br><span class="line">222222222222222222[    9.865256] procd: - ubus -</span><br><span class="line">22[    9.919344] procd: - init -</span><br><span class="line">Please press Enter to activate this console.</span><br><span class="line">2222[   10.053565] kmodloader: loading kernel modules from &#x2F;etc&#x2F;modules.d&#x2F;*</span><br><span class="line">2[   10.063282] ip6_tables: (C) 2000-2006 Netfilter Core Team</span><br><span class="line">[   10.077192] Loading modules backported from Linux version wt-2017-01-31-0-ge882dff19e7f</span><br><span class="line">[   10.085355] Backport generated by backports.git backports-20160324-13-g24da7d3c</span><br><span class="line">2[   10.095128] ip_tables: (C) 2000-2006 Netfilter Core Team</span><br><span class="line">[   10.106462] nf_conntrack version 0.5.0 (1954 buckets, 7816 max)</span><br><span class="line">2[   10.148845] xt_time: kernel timezone is -0000</span><br><span class="line">22[   10.197095] PPP generic driver version 2.4.2</span><br><span class="line">[   10.203387] NET: Registered protocol family 24</span><br></pre></td></tr></table></figure>
+<h4 id="Step-8-Connect-to-your-PC-directly"><a href="#Step-8-Connect-to-your-PC-directly" class="headerlink" title="Step 8 Connect to your PC directly"></a>Step 8 Connect to your PC directly</h4><p>With the snapshot being uploaded, unplug the MR18 from your router, and directly wire your computer to it. Once wired, you should get a IP from the MR18.</p>
+<p>Now that recovery is flashed, open a browser on your computer and navigate to <a href="http://192.168.1.1" target="_blank" rel="noopener">http://192.168.1.1</a>. Once signed into LuCI, you can then flash the current sysupgrade image for the MR18.</p>
+<p>Here is what is happening in the background. Once flashed, you can input any busybox commands and execute as root here. It also showed you that this unit has an ip now, 192.168.1.1.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">[   17.536270] kmodloader: done loading kernel modules from &#x2F;etc&#x2F;modules.d&#x2F;*</span><br><span class="line">[   23.768242] device eth0 entered promiscuous mode</span><br><span class="line">[   23.785955] IPv6: ADDRCONF(NETDEV_UP): br-lan: link is not ready</span><br><span class="line">[   24.406947] eth0: link up (1000Mbps&#x2F;Full duplex)</span><br><span class="line">[   24.411675] br-lan: port 1(eth0) entered forwarding state</span><br><span class="line">[   24.417211] br-lan: port 1(eth0) entered forwarding state</span><br><span class="line">[   24.458978] IPv6: ADDRCONF(NETDEV_CHANGE): br-lan: link becomes ready</span><br><span class="line">[   26.415041] br-lan: port 1(eth0) entered forwarding state</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BusyBox v1.26.2 () built-in shell (ash)</span><br><span class="line"></span><br><span class="line">     _________</span><br><span class="line">    &#x2F;        &#x2F;\      _    ___ ___  ___</span><br><span class="line">   &#x2F;  LE    &#x2F;  \    | |  | __|   \| __|</span><br><span class="line">  &#x2F;    DE  &#x2F;    \   | |__| _|| |) | _|</span><br><span class="line"> &#x2F;________&#x2F;  LE  \  |____|___|___&#x2F;|___|                      lede-project.org</span><br><span class="line"> \        \   DE &#x2F;</span><br><span class="line">  \    LE  \    &#x2F;  -----------------------------------------------------------</span><br><span class="line">   \  DE    \  &#x2F;    Reboot (SNAPSHOT, r4125-83e4ed3)</span><br><span class="line">    \________\&#x2F;    -----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D; WARNING! &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">There is no root password defined on this device!</span><br><span class="line">Use the &quot;passwd&quot; command to set up a new password</span><br><span class="line">in order to prevent unauthorized SSH logins.</span><br><span class="line">--------------------------------------------------</span><br><span class="line">root@LEDE:&#x2F;# ifconfig</span><br><span class="line">br-lan    Link encap:Ethernet  HWaddr 00:18:0A:F7:B9:80  </span><br><span class="line">          inet addr:192.168.1.1  Bcast:192.168.1.255  Mask:255.255.255.0</span><br><span class="line">          inet6 addr: fdd1:846:f940::1&#x2F;60 Scope:Global</span><br><span class="line">          inet6 addr: fe80::218:aff:fef7:b980&#x2F;64 Scope:Link</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</span><br><span class="line">          RX packets:3300 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:3161 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:1000</span><br><span class="line">          RX bytes:233588 (228.1 KiB)  TX bytes:247533 (241.7 KiB)</span><br></pre></td></tr></table></figure>
+<h4 id="Step-9-Well-Done"><a href="#Step-9-Well-Done" class="headerlink" title="Step 9 Well Done"></a>Step 9 Well Done</h4><p>As this point, you have Successfully flash the firmware with OpenWRT firmware.<br>Login to the web, and flash with the openwrt-18.06.4-ar71xx-nand-mr18-squashfs-sysupgrade.tar, your MR18 should reboot and be fully running OpenWrt/LEDE!</p>
+<h4 id="April-9-2020-UPDATE"><a href="#April-9-2020-UPDATE" class="headerlink" title="April 9 2020 UPDATE"></a>April 9 2020 UPDATE</h4><p>One of my customer saw my post about this flash process, he reached out to me and bring me a MR18 unit for replacing the firmware.<br>Luckily, the version that he purchased was 25, which I can use the method C to flash the firmware easily.<br>That unit has version number</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">boot 66 build 25-201712141532-Gobb86dd3-hamaki board ar7100</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/Wireless/" rel="tag"># Wireless</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/10/29/ByPass-ASA-5505-Login-Password/" rel="prev" title="ByPass ASA 5505 Login Password">
+      <i class="fa fa-chevron-left"></i> ByPass ASA 5505 Login Password
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/20/Meraki-MX60-GateWay-OpenWRT/" rel="next" title="Meraki MX60 GateWay OpenWRT">
+      Meraki MX60 GateWay OpenWRT <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Prerequisite"><span class="nav-number">1.</span> <span class="nav-text">Prerequisite</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step-1-Connect-the-UART-port-and-power-on"><span class="nav-number">2.</span> <span class="nav-text">Step 1 Connect the UART port and power on</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step-2-Locate-the-Version-Number-of-This-Device"><span class="nav-number">3.</span> <span class="nav-text">Step 2 Locate the Version Number of This Device</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step-3-Connect-your-MR18-to-Offline-Router"><span class="nav-number">4.</span> <span class="nav-text">Step 3 Connect your MR18 to Offline Router</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step-4-Level-2-Reset-for-MR18"><span class="nav-number">5.</span> <span class="nav-text">Step 4 Level 2 Reset for MR18</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step-5-Prepare-Files-for-Flashing"><span class="nav-number">6.</span> <span class="nav-text">Step 5 Prepare Files for Flashing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step-6-Load-the-firmware-to-MR18"><span class="nav-number">7.</span> <span class="nav-text">Step 6 Load the firmware to MR18</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step-7-Start-MR18-with-number-2-key-pressed"><span class="nav-number">8.</span> <span class="nav-text">Step 7 Start MR18 with number 2 key pressed</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step-8-Connect-to-your-PC-directly"><span class="nav-number">9.</span> <span class="nav-text">Step 8 Connect to your PC directly</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Step-9-Well-Done"><span class="nav-number">10.</span> <span class="nav-text">Step 9 Well Done</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#April-9-2020-UPDATE"><span class="nav-number">11.</span> <span class="nav-text">April 9 2020 UPDATE</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Professor Wu</p>
+  <div class="site-description" itemprop="description">Share IT tips and tricks</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Professor Wu</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

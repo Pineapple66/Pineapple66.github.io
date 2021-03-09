@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://pineapple66.github.io/2019/03/20/Meraki-MX60-GateWay-OpenWRT/2.jpg">
 <meta property="article:published_time" content="2019-03-21T03:17:58.000Z">
-<meta property="article:modified_time" content="2020-07-30T04:27:57.223Z">
+<meta property="article:modified_time" content="2021-03-09T16:12:34.324Z">
 <meta property="article:author" content="Professor Wu">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="Router">
@@ -229,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-29 23:27:57" itemprop="dateModified" datetime="2020-07-29T23:27:57-05:00">2020-07-29</time>
+                <time title="Modified: 2021-03-09 10:12:34" itemprop="dateModified" datetime="2021-03-09T10:12:34-06:00">2021-03-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -300,7 +300,7 @@
 <h4 id="Step-8-Back-up-the-image-file"><a href="#Step-8-Back-up-the-image-file" class="headerlink" title="Step 8 Back up the image file"></a>Step 8 Back up the image file</h4><p>Copy the initramfs-kernel.bin into router itself and back it up. By issuing this command on your terminal, it will copy over SSH into your router tmp folder.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp &#x2F;home&#x2F;youname&#x2F;Downloads&#x2F;openwrt-apm821xx-nand-meraki_mx60-initramfs-kernel.bin root@192.168.1.1:&#x2F;tmp&#x2F;</span><br></pre></td></tr></table></figure>
 <h4 id="Step-9-Create-a-recovery-UBI-partition"><a href="#Step-9-Create-a-recovery-UBI-partition" class="headerlink" title="Step 9 Create a recovery UBI partition"></a>Step 9 Create a recovery UBI partition</h4><p>This will host an initramfs build so our board can have a failback image in case of a bad flash, or sysupgrade issue.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ls -alh &#x2F;tmp&#x2F;lede-apm821xx-nand-mx60-initramfs-kernel.bin</span><br><span class="line"></span><br><span class="line">ubimkvol &#x2F;dev&#x2F;ubi0 -s 10MiB -N recovery</span><br><span class="line"></span><br><span class="line">ubiupdatevol &#x2F;dev&#x2F;ubi0_1 &#x2F;tmp&#x2F;openwrt-apm821xx-nand-meraki_mx60-initramfs-kernel.bin</span><br><span class="line">ls -alh &#x2F;tmp&#x2F;lede-apm821xx-nand-mx60-initramfs-kernel.bin</span><br><span class="line"></span><br><span class="line">ubimkvol &#x2F;dev&#x2F;ubi0 -s 10MiB -N recovery</span><br><span class="line"></span><br><span class="line">ubiupdatevol &#x2F;dev&#x2F;ubi0_1 &#x2F;tmp&#x2F;openwrt-apm821xx-nand-meraki_mx60-initramfs-kernel.bin</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ls -alh &#x2F;tmp&#x2F;lede-apm821xx-nand-mx60-initramfs-kernel.bin</span><br><span class="line"></span><br><span class="line">ubimkvol &#x2F;dev&#x2F;ubi0 -s 10MiB -N recovery</span><br><span class="line"></span><br><span class="line">ubiupdatevol &#x2F;dev&#x2F;ubi0_1 &#x2F;tmp&#x2F;openwrt-apm821xx-nand-meraki_mx60-initramfs-kernel.bin</span><br></pre></td></tr></table></figure>
 <h4 id="Step-10-Login-to-Luci-interface"><a href="#Step-10-Login-to-Luci-interface" class="headerlink" title="Step 10 Login to Luci interface"></a>Step 10 Login to Luci interface</h4><ol>
 <li>If you are using openwrt-apm821xx-nand-meraki_mx60-initramfs-kernel.bin<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-please Move your ethernet cable from WAN port to LAN1 port.</span><br><span class="line"></span><br><span class="line">-Make sure you can ping 192.168.1.1 from your computer.</span><br><span class="line"></span><br><span class="line">-Connect the WAN port to the internet</span><br><span class="line"></span><br><span class="line">-opkg update</span><br><span class="line"></span><br><span class="line">-opkg install luci</span><br><span class="line"></span><br><span class="line">-wait for process get done. There you go, now you have luci, then you can do 192.168.1.1 and flash sysupgrade.tar file to complete this flash process.</span><br></pre></td></tr></table></figure></li>
 <li>If you are using openwrt-18.06.4-apm821xx-nand-meraki_mx60-initramfs-kernel.bin,<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-please Move your ethernet cable from WAN port to LAN1 port.</span><br><span class="line"></span><br><span class="line">-Make sure you can ping 192.168.1.1 from your computer.</span><br><span class="line"></span><br><span class="line">-Go to 192.168.1.1</span><br><span class="line"></span><br><span class="line">-upload the sysupgrade.tar file to complete this flash process.</span><br></pre></td></tr></table></figure>
@@ -442,7 +442,7 @@
 <div class="copyright">
   
   &copy; 2015 – 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

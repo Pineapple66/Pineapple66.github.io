@@ -1,6 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Toying My Cloud</title>
+    <url>/2015/09/15/Toying-My-Cloud/</url>
+    <content><![CDATA[<p>My Cloud™ Home is an easy-to-use personal cloud storage device that plugs directly into your router at home so you can save all your digital content in one central place. Unlike a NAS, it’s a simple centralized solution to ….</p>
+<p>More detail  <a href="https://shop.westerndigital.com/products/cloud-storage/wd-my-cloud-home" target="_blank" rel="noopener">Click me to official site</a></p>
+<p>Instead of continue doing sales job today, we are going to take look at a few interests points.</p>
+<a id="more"></a>
+
+<h4 id="Interests-Points-1-OS-amp-SSH"><a href="#Interests-Points-1-OS-amp-SSH" class="headerlink" title="Interests Points 1 . OS &amp; SSH"></a>Interests Points 1 . OS &amp; SSH</h4><p>A computer product offers certain services it must a hardware and some software. Logging on with ssh or perform Nmap scanning will allow us to see what is in the back. After reviewing the official documentation online, we know that the default user is root with password Welc0me. In order to change that, we need to first turn on ssh access to My Cloud box.</p>
+<h5 id="Turn-On-SSH"><a href="#Turn-On-SSH" class="headerlink" title="Turn On SSH"></a>Turn On SSH</h5><p>Navigate to the settings page and turn ON  “SSH”</p>
+<img src="/2015/09/15/Toying-My-Cloud/SSH_config.jpg" class="">
+
+<h5 id="Change-Password"><a href="#Change-Password" class="headerlink" title="Change Password"></a>Change Password</h5><p>I was using windows environment on this demo, and putty was downloaded previously. Login by entering the IP address listed on the configuration page with the default password. Once you have login via Putty, issues the following commands to change the root password.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">passwd root</span><br></pre></td></tr></table></figure>
+<h4 id="Interests-Points-2-SSH-key-file-login"><a href="#Interests-Points-2-SSH-key-file-login" class="headerlink" title="Interests Points 2 . SSH key file login"></a>Interests Points 2 . SSH key file login</h4><p>Since we know this is debian system, we can try to enable the ssh login via keys to harden the device. The reason of utilizing this method is my network condition, I was using the campus dorms room’s network, where I didn’t have control of anything, and we did have some students who loves “scanning” the network with brute-force attack..</p>
+<h5 id="Using-Key-Gen"><a href="#Using-Key-Gen" class="headerlink" title="Using Key-Gen"></a>Using Key-Gen</h5><p>Download and run the Putty key-gen from <a href="https://www.puttygen.com/" target="_blank" rel="noopener">Here</a>  </p>
+<h5 id="Generating-the-SSH-Key-Pairs"><a href="#Generating-the-SSH-Key-Pairs" class="headerlink" title="Generating the SSH Key Pairs"></a>Generating the SSH Key Pairs</h5><p>Click Generate on the key-gen software to start the processes. It will looks like this when it was completed.</p>
+<img src="/2015/09/15/Toying-My-Cloud/3.png" class="">
+
+<p>Save both your public key and private key somewhere save on your file sever, NEVER share your private key with anyone.</p>
+<h5 id="Import-SSH-key-into-the-box"><a href="#Import-SSH-key-into-the-box" class="headerlink" title="Import SSH key into the box"></a>Import SSH key into the box</h5><p>If you are continue using root to login, you may create a Directory /root/.ssh/authorized_keys with</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p ~&#x2F;.ssh</span><br><span class="line">touch ~&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
+<p>Once finished, open authorized_keys by</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi ~&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
+<p>copy and paste the public key to this file, save, and exit.</p>
+<img src="/2015/09/15/Toying-My-Cloud/4.png" class="">
+
+<p>You are done! This linux box is now support ssh key login.   </p>
+<img src="/2015/09/15/Toying-My-Cloud/6.png" class="">
+<img src="/2015/09/15/Toying-My-Cloud/5.png" class="">
+
+
+<h4 id="Interests-Points-3-Turn-ON-HTTPS-amp-amp-SFTP-connection-Failed"><a href="#Interests-Points-3-Turn-ON-HTTPS-amp-amp-SFTP-connection-Failed" class="headerlink" title="Interests Points 3 . Turn ON HTTPS &amp;&amp; SFTP connection - Failed"></a>Interests Points 3 . Turn ON HTTPS &amp;&amp; SFTP connection - Failed</h4><p>With the better understanding of this slim version of debian Linux,  we might be able to turn on the https and Sftp on this device. HTTP and FTP is used by default on this software version, which it is a security hazard. From a WireShark packet captured we can see the password was submitted and transferred with plain text.<br>HTTP</p>
+<img src="/2015/09/15/Toying-My-Cloud/1.png" class="">
+<p>FTP</p>
+<img src="/2015/09/15/Toying-My-Cloud/2.png" class="">
+
+<h5 id="It-is-NOT-supported-officially"><a href="#It-is-NOT-supported-officially" class="headerlink" title="It is NOT supported officially"></a>It is NOT supported officially</h5><p>Navigate to My Cloud web configuration page,  you will easily see the overall usage and FTP On &amp; OFF button…However, there is NO config or settings anywhere I can go and modify this settings, which provides this box no security feature.</p>
+<h4 id="Interests-Points-4-Misc"><a href="#Interests-Points-4-Misc" class="headerlink" title="Interests Points 4 . Misc"></a>Interests Points 4 . Misc</h4><p>After using Nmap and toying around the box, there is not much services (ports) that this box offers. with limited processing power available, the encrypt and decrypt processes could not be satisfied.<br>Since this is a debian box, tcpdump should still on there…</p>
+<img src="/2015/09/15/Toying-My-Cloud/7.png" class="">
+<img src="/2015/09/15/Toying-My-Cloud/8.jfif" class="">
+
+<p>it looks like they are using these dynamic port 49153 to receiving the data..</p>
+<h4 id="Updates-On-2016"><a href="#Updates-On-2016" class="headerlink" title="Updates On 2016"></a>Updates On 2016</h4><p>Right before sold this unit. I teared it down, it just a fan-less compute board with a 3TB WD RED hard drive inside, not sure about the processor model and amount of ram. This unit was sold in April 2016 due to lack of security, low transferring speed, and no redundancy options.  </p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>NAS</tag>
+        <tag>TCP/IP</tag>
+        <tag>WireShark</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ByPass ASA 5505 Login Password</title>
+    <url>/2017/10/29/ByPass-ASA-5505-Login-Password/</url>
+    <content><![CDATA[<p>You can never refuse the free stuff from work. This is a decommissioned firewall unit from a branch office. This ASA 5505 unit has an basic license with 512 MB RAM and an AMD 500MHz Geode CPU.</p>
+<p>On this tutorial, I will show you how to reset/bypass the password on this unit.</p>
+<a id="more"></a>
+
+<p>Here is the detail version information about this unit.</p>
+<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/1.png" class="">
+
+<h4 id="Step-1-Connect-Unit-to-Your-Device"><a href="#Step-1-Connect-Unit-to-Your-Device" class="headerlink" title="Step 1 Connect Unit to Your Device"></a>Step 1 Connect Unit to Your Device</h4><p>Locate the console port on the ASA unit – Marked Blue on the device, and use a Cisco serial cable connect to your desktop serial port.<br>Cable looks like this</p>
+<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/2.jfif" class="">
+
+<p>Once that is done, open your device manager and look under “Ports(COM&amp;LPT)” section, we will need to find out the correct COM number. Make sure you connected before move on to the next step.  </p>
+<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/1-5.png" class="">
+
+
+<h4 id="Step-2-Turn-it-off"><a href="#Step-2-Turn-it-off" class="headerlink" title="Step 2 Turn it off"></a>Step 2 Turn it off</h4><p>Unplug the power to turn it off, and then power it back on.</p>
+<h4 id="Step-3-ROMMON-Mode"><a href="#Step-3-ROMMON-Mode" class="headerlink" title="Step 3 ROMMON Mode"></a>Step 3 ROMMON Mode</h4><p>Taping “Escape” Key while the device is booting, you will be guided into ROMMON mode, it looks like this.</p>
+<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/3.png" class="">
+
+<h4 id="Step-4-Set-the-Register-Value"><a href="#Step-4-Set-the-Register-Value" class="headerlink" title="Step 4 Set the Register Value"></a>Step 4 Set the Register Value</h4><p>This commandwill set the ASA to ignore the startup configuration. Type the following commands to update the configuration Register value:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rommon #0&gt; confreg 0x41</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rommon #1&gt; confreg</span><br></pre></td></tr></table></figure>
+<p> Accept the default values for all settings, except for the “disable system configuration?” value; at that prompt, enter Y.</p>
+<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/4.png" class="">
+
+
+<h4 id="Step-5-Boot-the-Device"><a href="#Step-5-Boot-the-Device" class="headerlink" title="Step 5 Boot the Device"></a>Step 5 Boot the Device</h4><p>Issues following command to continue boot process for the device.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rommon #2&gt; boot</span><br></pre></td></tr></table></figure>
+<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/5.png" class="">
+
+<h4 id="Step-6-Enter-EXEC-mode"><a href="#Step-6-Enter-EXEC-mode" class="headerlink" title="Step 6 Enter EXEC mode"></a>Step 6 Enter EXEC mode</h4><p>At this point, password should be blank now. Once system is up, enter</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa&gt; en</span><br></pre></td></tr></table></figure>
+<p>With “blank” password to enter EXEC mode— Just hit enter key, there is no Password.</p>
+<h4 id="Step-7-Copy-Start-up-Config-to-Running-Config"><a href="#Step-7-Copy-Start-up-Config-to-Running-Config" class="headerlink" title="Step 7 Copy Start-up Config to Running Config"></a>Step 7 Copy Start-up Config to Running Config</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa# copy startup-config running-config</span><br></pre></td></tr></table></figure>
+<h4 id="Step-8-optional-Set-a-New-Password"><a href="#Step-8-optional-Set-a-New-Password" class="headerlink" title="Step 8 (optional) Set a New Password"></a>Step 8 (optional) Set a New Password</h4><p>This step is optional, depending on your needs.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa# conf t</span><br><span class="line">ciscoasa(config)# password devicepassword</span><br><span class="line">ciscoasa(config)# enable password EXECmodepassword</span><br><span class="line">ciscoasa(config)# username orange password userorangepassword</span><br></pre></td></tr></table></figure>
+<h4 id="Step-9-Set-the-Register-Back"><a href="#Step-9-Set-the-Register-Back" class="headerlink" title="Step 9 Set the Register Back"></a>Step 9 Set the Register Back</h4><p>In order to boot normally, we need to reset the register value</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa(config)# config-register 0x1</span><br></pre></td></tr></table></figure>
+<h4 id="Step-10-Save-the-Settings-amp-All-Done"><a href="#Step-10-Save-the-Settings-amp-All-Done" class="headerlink" title="Step 10 Save the Settings &amp; All Done!"></a>Step 10 Save the Settings &amp; All Done!</h4><p>Copy running-config to startup-config and reload, you are all done!</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">write mem</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">reload</span><br></pre></td></tr></table></figure>
+<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/6.png" class="">
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Router</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Meraki MR18 OpenWRT</title>
     <url>/2019/02/15/Meraki-MR18-OpenWRT/</url>
     <content><![CDATA[<p>Cisco Meraki enterprise network is a cloud-managed IT company, their product include wireless, switching, security, enterprise mobility management and security cameras, all centrally managed from the web. Meraki MR18 offers great performance overall for small home/office deployments.</p>
@@ -106,7 +214,7 @@
 <h4 id="Step-8-Back-up-the-image-file"><a href="#Step-8-Back-up-the-image-file" class="headerlink" title="Step 8 Back up the image file"></a>Step 8 Back up the image file</h4><p>Copy the initramfs-kernel.bin into router itself and back it up. By issuing this command on your terminal, it will copy over SSH into your router tmp folder.</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">scp &#x2F;home&#x2F;youname&#x2F;Downloads&#x2F;openwrt-apm821xx-nand-meraki_mx60-initramfs-kernel.bin root@192.168.1.1:&#x2F;tmp&#x2F;</span><br></pre></td></tr></table></figure>
 <h4 id="Step-9-Create-a-recovery-UBI-partition"><a href="#Step-9-Create-a-recovery-UBI-partition" class="headerlink" title="Step 9 Create a recovery UBI partition"></a>Step 9 Create a recovery UBI partition</h4><p>This will host an initramfs build so our board can have a failback image in case of a bad flash, or sysupgrade issue.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ls -alh &#x2F;tmp&#x2F;lede-apm821xx-nand-mx60-initramfs-kernel.bin</span><br><span class="line"></span><br><span class="line">ubimkvol &#x2F;dev&#x2F;ubi0 -s 10MiB -N recovery</span><br><span class="line"></span><br><span class="line">ubiupdatevol &#x2F;dev&#x2F;ubi0_1 &#x2F;tmp&#x2F;openwrt-apm821xx-nand-meraki_mx60-initramfs-kernel.bin</span><br><span class="line">ls -alh &#x2F;tmp&#x2F;lede-apm821xx-nand-mx60-initramfs-kernel.bin</span><br><span class="line"></span><br><span class="line">ubimkvol &#x2F;dev&#x2F;ubi0 -s 10MiB -N recovery</span><br><span class="line"></span><br><span class="line">ubiupdatevol &#x2F;dev&#x2F;ubi0_1 &#x2F;tmp&#x2F;openwrt-apm821xx-nand-meraki_mx60-initramfs-kernel.bin</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ls -alh &#x2F;tmp&#x2F;lede-apm821xx-nand-mx60-initramfs-kernel.bin</span><br><span class="line"></span><br><span class="line">ubimkvol &#x2F;dev&#x2F;ubi0 -s 10MiB -N recovery</span><br><span class="line"></span><br><span class="line">ubiupdatevol &#x2F;dev&#x2F;ubi0_1 &#x2F;tmp&#x2F;openwrt-apm821xx-nand-meraki_mx60-initramfs-kernel.bin</span><br></pre></td></tr></table></figure>
 <h4 id="Step-10-Login-to-Luci-interface"><a href="#Step-10-Login-to-Luci-interface" class="headerlink" title="Step 10 Login to Luci interface"></a>Step 10 Login to Luci interface</h4><ol>
 <li>If you are using openwrt-apm821xx-nand-meraki_mx60-initramfs-kernel.bin<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-please Move your ethernet cable from WAN port to LAN1 port.</span><br><span class="line"></span><br><span class="line">-Make sure you can ping 192.168.1.1 from your computer.</span><br><span class="line"></span><br><span class="line">-Connect the WAN port to the internet</span><br><span class="line"></span><br><span class="line">-opkg update</span><br><span class="line"></span><br><span class="line">-opkg install luci</span><br><span class="line"></span><br><span class="line">-wait for process get done. There you go, now you have luci, then you can do 192.168.1.1 and flash sysupgrade.tar file to complete this flash process.</span><br></pre></td></tr></table></figure></li>
 <li>If you are using openwrt-18.06.4-apm821xx-nand-meraki_mx60-initramfs-kernel.bin,<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-please Move your ethernet cable from WAN port to LAN1 port.</span><br><span class="line"></span><br><span class="line">-Make sure you can ping 192.168.1.1 from your computer.</span><br><span class="line"></span><br><span class="line">-Go to 192.168.1.1</span><br><span class="line"></span><br><span class="line">-upload the sysupgrade.tar file to complete this flash process.</span><br></pre></td></tr></table></figure>
@@ -117,59 +225,6 @@
 ]]></content>
       <categories>
         <category>Network</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Router</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ByPass ASA 5505 Login Password</title>
-    <url>/2017/10/29/ByPass-ASA-5505-Login-Password/</url>
-    <content><![CDATA[<p>You can never refuse the free stuff from work. This is a decommissioned firewall unit from a branch office. This ASA 5505 unit has an basic license with 512 MB RAM and an AMD 500MHz Geode CPU.</p>
-<p>On this tutorial, I will show you how to reset/bypass the password on this unit.</p>
-<a id="more"></a>
-
-<p>Here is the detail version information about this unit.</p>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/1.png" class="">
-
-<h4 id="Step-1-Connect-Unit-to-Your-Device"><a href="#Step-1-Connect-Unit-to-Your-Device" class="headerlink" title="Step 1 Connect Unit to Your Device"></a>Step 1 Connect Unit to Your Device</h4><p>Locate the console port on the ASA unit – Marked Blue on the device, and use a Cisco serial cable connect to your desktop serial port.<br>Cable looks like this</p>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/2.jfif" class="">
-
-<p>Once that is done, open your device manager and look under “Ports(COM&amp;LPT)” section, we will need to find out the correct COM number. Make sure you connected before move on to the next step.  </p>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/1-5.png" class="">
-
-
-<h4 id="Step-2-Turn-it-off"><a href="#Step-2-Turn-it-off" class="headerlink" title="Step 2 Turn it off"></a>Step 2 Turn it off</h4><p>Unplug the power to turn it off, and then power it back on.</p>
-<h4 id="Step-3-ROMMON-Mode"><a href="#Step-3-ROMMON-Mode" class="headerlink" title="Step 3 ROMMON Mode"></a>Step 3 ROMMON Mode</h4><p>Taping “Escape” Key while the device is booting, you will be guided into ROMMON mode, it looks like this.</p>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/3.png" class="">
-
-<h4 id="Step-4-Set-the-Register-Value"><a href="#Step-4-Set-the-Register-Value" class="headerlink" title="Step 4 Set the Register Value"></a>Step 4 Set the Register Value</h4><p>This commandwill set the ASA to ignore the startup configuration. Type the following commands to update the configuration Register value:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rommon #0&gt; confreg 0x41</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rommon #1&gt; confreg</span><br></pre></td></tr></table></figure>
-<p> Accept the default values for all settings, except for the “disable system configuration?” value; at that prompt, enter Y.</p>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/4.png" class="">
-
-
-<h4 id="Step-5-Boot-the-Device"><a href="#Step-5-Boot-the-Device" class="headerlink" title="Step 5 Boot the Device"></a>Step 5 Boot the Device</h4><p>Issues following command to continue boot process for the device.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rommon #2&gt; boot</span><br></pre></td></tr></table></figure>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/5.png" class="">
-
-<h4 id="Step-6-Enter-EXEC-mode"><a href="#Step-6-Enter-EXEC-mode" class="headerlink" title="Step 6 Enter EXEC mode"></a>Step 6 Enter EXEC mode</h4><p>At this point, password should be blank now. Once system is up, enter</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa&gt; en</span><br></pre></td></tr></table></figure>
-<p>With “blank” password to enter EXEC mode— Just hit enter key, there is no Password.</p>
-<h4 id="Step-7-Copy-Start-up-Config-to-Running-Config"><a href="#Step-7-Copy-Start-up-Config-to-Running-Config" class="headerlink" title="Step 7 Copy Start-up Config to Running Config"></a>Step 7 Copy Start-up Config to Running Config</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa# copy startup-config running-config</span><br></pre></td></tr></table></figure>
-<h4 id="Step-8-optional-Set-a-New-Password"><a href="#Step-8-optional-Set-a-New-Password" class="headerlink" title="Step 8 (optional) Set a New Password"></a>Step 8 (optional) Set a New Password</h4><p>This step is optional, depending on your needs.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa# conf t</span><br><span class="line">ciscoasa(config)# password devicepassword</span><br><span class="line">ciscoasa(config)# enable password EXECmodepassword</span><br><span class="line">ciscoasa(config)# username orange password userorangepassword</span><br></pre></td></tr></table></figure>
-<h4 id="Step-9-Set-the-Register-Back"><a href="#Step-9-Set-the-Register-Back" class="headerlink" title="Step 9 Set the Register Back"></a>Step 9 Set the Register Back</h4><p>In order to boot normally, we need to reset the register value</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa(config)# config-register 0x1</span><br></pre></td></tr></table></figure>
-<h4 id="Step-10-Save-the-Settings-amp-All-Done"><a href="#Step-10-Save-the-Settings-amp-All-Done" class="headerlink" title="Step 10 Save the Settings &amp; All Done!"></a>Step 10 Save the Settings &amp; All Done!</h4><p>Copy running-config to startup-config and reload, you are all done!</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">write mem</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">reload</span><br></pre></td></tr></table></figure>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/6.png" class="">
-]]></content>
-      <categories>
-        <category>Security</category>
       </categories>
       <tags>
         <tag>Linux</tag>
@@ -217,61 +272,6 @@
       </categories>
       <tags>
         <tag>Switch</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Toying My Cloud</title>
-    <url>/2015/09/15/Toying-My-Cloud/</url>
-    <content><![CDATA[<p>My Cloud™ Home is an easy-to-use personal cloud storage device that plugs directly into your router at home so you can save all your digital content in one central place. Unlike a NAS, it’s a simple centralized solution to ….</p>
-<p>More detail  <a href="https://shop.westerndigital.com/products/cloud-storage/wd-my-cloud-home" target="_blank" rel="noopener">Click me to official site</a></p>
-<p>Instead of continue doing sales job today, we are going to take look at a few interests points.</p>
-<a id="more"></a>
-
-<h4 id="Interests-Points-1-OS-amp-SSH"><a href="#Interests-Points-1-OS-amp-SSH" class="headerlink" title="Interests Points 1 . OS &amp; SSH"></a>Interests Points 1 . OS &amp; SSH</h4><p>A computer product offers certain services it must a hardware and some software. Logging on with ssh or perform Nmap scanning will allow us to see what is in the back. After reviewing the official documentation online, we know that the default user is root with password Welc0me. In order to change that, we need to first turn on ssh access to My Cloud box.</p>
-<h5 id="Turn-On-SSH"><a href="#Turn-On-SSH" class="headerlink" title="Turn On SSH"></a>Turn On SSH</h5><p>Navigate to the settings page and turn ON  “SSH”</p>
-<img src="/2015/09/15/Toying-My-Cloud/SSH_config.jpg" class="">
-
-<h5 id="Change-Password"><a href="#Change-Password" class="headerlink" title="Change Password"></a>Change Password</h5><p>I was using windows environment on this demo, and putty was downloaded previously. Login by entering the IP address listed on the configuration page with the default password. Once you have login via Putty, issues the following commands to change the root password.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">passwd root</span><br></pre></td></tr></table></figure>
-<h4 id="Interests-Points-2-SSH-key-file-login"><a href="#Interests-Points-2-SSH-key-file-login" class="headerlink" title="Interests Points 2 . SSH key file login"></a>Interests Points 2 . SSH key file login</h4><p>Since we know this is debian system, we can try to enable the ssh login via keys to harden the device. The reason of utilizing this method is my network condition, I was using the campus dorms room’s network, where I didn’t have control of anything, and we did have some students who loves “scanning” the network with brute-force attack..</p>
-<h5 id="Using-Key-Gen"><a href="#Using-Key-Gen" class="headerlink" title="Using Key-Gen"></a>Using Key-Gen</h5><p>Download and run the Putty key-gen from <a href="https://www.puttygen.com/" target="_blank" rel="noopener">Here</a>  </p>
-<h5 id="Generating-the-SSH-Key-Pairs"><a href="#Generating-the-SSH-Key-Pairs" class="headerlink" title="Generating the SSH Key Pairs"></a>Generating the SSH Key Pairs</h5><p>Click Generate on the key-gen software to start the processes. It will looks like this when it was completed.</p>
-<img src="/2015/09/15/Toying-My-Cloud/3.png" class="">
-
-<p>Save both your public key and private key somewhere save on your file sever, NEVER share your private key with anyone.</p>
-<h5 id="Import-SSH-key-into-the-box"><a href="#Import-SSH-key-into-the-box" class="headerlink" title="Import SSH key into the box"></a>Import SSH key into the box</h5><p>If you are continue using root to login, you may create a Directory /root/.ssh/authorized_keys with</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p ~&#x2F;.ssh</span><br><span class="line">touch ~&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
-<p>Once finished, open authorized_keys by</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi ~&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
-<p>copy and paste the public key to this file, save, and exit.</p>
-<img src="/2015/09/15/Toying-My-Cloud/4.png" class="">
-
-<p>You are done! This linux box is now support ssh key login.   </p>
-<img src="/2015/09/15/Toying-My-Cloud/6.png" class="">
-<img src="/2015/09/15/Toying-My-Cloud/5.png" class="">
-
-
-<h4 id="Interests-Points-3-Turn-ON-HTTPS-amp-amp-SFTP-connection-Failed"><a href="#Interests-Points-3-Turn-ON-HTTPS-amp-amp-SFTP-connection-Failed" class="headerlink" title="Interests Points 3 . Turn ON HTTPS &amp;&amp; SFTP connection - Failed"></a>Interests Points 3 . Turn ON HTTPS &amp;&amp; SFTP connection - Failed</h4><p>With the better understanding of this slim version of debian Linux,  we might be able to turn on the https and Sftp on this device. HTTP and FTP is used by default on this software version, which it is a security hazard. From a WireShark packet captured we can see the password was submitted and transferred with plain text.<br>HTTP</p>
-<img src="/2015/09/15/Toying-My-Cloud/1.png" class="">
-<p>FTP</p>
-<img src="/2015/09/15/Toying-My-Cloud/2.png" class="">
-
-<h5 id="It-is-NOT-supported-officially"><a href="#It-is-NOT-supported-officially" class="headerlink" title="It is NOT supported officially"></a>It is NOT supported officially</h5><p>Navigate to My Cloud web configuration page,  you will easily see the overall usage and FTP On &amp; OFF button…However, there is NO config or settings anywhere I can go and modify this settings, which provides this box no security feature.</p>
-<h4 id="Interests-Points-4-Misc"><a href="#Interests-Points-4-Misc" class="headerlink" title="Interests Points 4 . Misc"></a>Interests Points 4 . Misc</h4><p>After using Nmap and toying around the box, there is not much services (ports) that this box offers. with limited processing power available, the encrypt and decrypt processes could not be satisfied.<br>Since this is a debian box, tcpdump should still on there…</p>
-<img src="/2015/09/15/Toying-My-Cloud/7.png" class="">
-<img src="/2015/09/15/Toying-My-Cloud/8.jfif" class="">
-
-<p>it looks like they are using these dynamic port 49153 to receiving the data..</p>
-<h4 id="Updates-On-2016"><a href="#Updates-On-2016" class="headerlink" title="Updates On 2016"></a>Updates On 2016</h4><p>Right before sold this unit. I teared it down, it just a fan-less compute board with a 3TB WD RED hard drive inside, not sure about the processor model and amount of ram. This unit was sold in April 2016 due to lack of security, low transferring speed, and no redundancy options.  </p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>NAS</tag>
-        <tag>TCP/IP</tag>
-        <tag>WireShark</tag>
       </tags>
   </entry>
 </search>

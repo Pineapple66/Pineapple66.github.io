@@ -1,169 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Toying My Cloud</title>
-    <url>/2015/09/15/Toying-My-Cloud/</url>
-    <content><![CDATA[<p>My Cloud™ Home is an easy-to-use personal cloud storage device that plugs directly into your router at home so you can save all your digital content in one central place. Unlike a NAS, it’s a simple centralized solution to ….</p>
-<p>More detail  <a href="https://shop.westerndigital.com/products/cloud-storage/wd-my-cloud-home" target="_blank" rel="noopener">Click me to official site</a></p>
-<p>Instead of continue doing sales job today, we are going to take look at a few interests points.</p>
-<a id="more"></a>
-
-<h4 id="Interests-Points-1-OS-amp-SSH"><a href="#Interests-Points-1-OS-amp-SSH" class="headerlink" title="Interests Points 1 . OS &amp; SSH"></a>Interests Points 1 . OS &amp; SSH</h4><p>A computer product offers certain services it must a hardware and some software. Logging on with ssh or perform Nmap scanning will allow us to see what is in the back. After reviewing the official documentation online, we know that the default user is root with password Welc0me. In order to change that, we need to first turn on ssh access to My Cloud box.</p>
-<h5 id="Turn-On-SSH"><a href="#Turn-On-SSH" class="headerlink" title="Turn On SSH"></a>Turn On SSH</h5><p>Navigate to the settings page and turn ON  “SSH”</p>
-<img src="/2015/09/15/Toying-My-Cloud/SSH_config.jpg" class="">
-
-<h5 id="Change-Password"><a href="#Change-Password" class="headerlink" title="Change Password"></a>Change Password</h5><p>I was using windows environment on this demo, and putty was downloaded previously. Login by entering the IP address listed on the configuration page with the default password. Once you have login via Putty, issues the following commands to change the root password.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">passwd root</span><br></pre></td></tr></table></figure>
-<h4 id="Interests-Points-2-SSH-key-file-login"><a href="#Interests-Points-2-SSH-key-file-login" class="headerlink" title="Interests Points 2 . SSH key file login"></a>Interests Points 2 . SSH key file login</h4><p>Since we know this is debian system, we can try to enable the ssh login via keys to harden the device. The reason of utilizing this method is my network condition, I was using the campus dorms room’s network, where I didn’t have control of anything, and we did have some students who loves “scanning” the network with brute-force attack..</p>
-<h5 id="Using-Key-Gen"><a href="#Using-Key-Gen" class="headerlink" title="Using Key-Gen"></a>Using Key-Gen</h5><p>Download and run the Putty key-gen from <a href="https://www.puttygen.com/" target="_blank" rel="noopener">Here</a>  </p>
-<h5 id="Generating-the-SSH-Key-Pairs"><a href="#Generating-the-SSH-Key-Pairs" class="headerlink" title="Generating the SSH Key Pairs"></a>Generating the SSH Key Pairs</h5><p>Click Generate on the key-gen software to start the processes. It will looks like this when it was completed.</p>
-<img src="/2015/09/15/Toying-My-Cloud/3.png" class="">
-
-<p>Save both your public key and private key somewhere save on your file sever, NEVER share your private key with anyone.</p>
-<h5 id="Import-SSH-key-into-the-box"><a href="#Import-SSH-key-into-the-box" class="headerlink" title="Import SSH key into the box"></a>Import SSH key into the box</h5><p>If you are continue using root to login, you may create a Directory /root/.ssh/authorized_keys with</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p ~&#x2F;.ssh</span><br><span class="line">touch ~&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
-<p>Once finished, open authorized_keys by</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi ~&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
-<p>copy and paste the public key to this file, save, and exit.</p>
-<img src="/2015/09/15/Toying-My-Cloud/4.png" class="">
-
-<p>You are done! This linux box is now support ssh key login.   </p>
-<img src="/2015/09/15/Toying-My-Cloud/6.png" class="">
-<img src="/2015/09/15/Toying-My-Cloud/5.png" class="">
-
-
-<h4 id="Interests-Points-3-Turn-ON-HTTPS-amp-amp-SFTP-connection-Failed"><a href="#Interests-Points-3-Turn-ON-HTTPS-amp-amp-SFTP-connection-Failed" class="headerlink" title="Interests Points 3 . Turn ON HTTPS &amp;&amp; SFTP connection - Failed"></a>Interests Points 3 . Turn ON HTTPS &amp;&amp; SFTP connection - Failed</h4><p>With the better understanding of this slim version of debian Linux,  we might be able to turn on the https and Sftp on this device. HTTP and FTP is used by default on this software version, which it is a security hazard. From a WireShark packet captured we can see the password was submitted and transferred with plain text.<br>HTTP</p>
-<img src="/2015/09/15/Toying-My-Cloud/1.png" class="">
-<p>FTP</p>
-<img src="/2015/09/15/Toying-My-Cloud/2.png" class="">
-
-<h5 id="It-is-NOT-supported-officially"><a href="#It-is-NOT-supported-officially" class="headerlink" title="It is NOT supported officially"></a>It is NOT supported officially</h5><p>Navigate to My Cloud web configuration page,  you will easily see the overall usage and FTP On &amp; OFF button…However, there is NO config or settings anywhere I can go and modify this settings, which provides this box no security feature.</p>
-<h4 id="Interests-Points-4-Misc"><a href="#Interests-Points-4-Misc" class="headerlink" title="Interests Points 4 . Misc"></a>Interests Points 4 . Misc</h4><p>After using Nmap and toying around the box, there is not much services (ports) that this box offers. with limited processing power available, the encrypt and decrypt processes could not be satisfied.<br>Since this is a debian box, tcpdump should still on there…</p>
-<img src="/2015/09/15/Toying-My-Cloud/7.png" class="">
-<img src="/2015/09/15/Toying-My-Cloud/8.jfif" class="">
-
-<p>it looks like they are using these dynamic port 49153 to receiving the data..</p>
-<h4 id="Updates-On-2016"><a href="#Updates-On-2016" class="headerlink" title="Updates On 2016"></a>Updates On 2016</h4><p>Right before sold this unit. I teared it down, it just a fan-less compute board with a 3TB WD RED hard drive inside, not sure about the processor model and amount of ram. This unit was sold in April 2016 due to lack of security, low transferring speed, and no redundancy options.  </p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>NAS</tag>
-        <tag>TCP/IP</tag>
-        <tag>WireShark</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ByPass ASA 5505 Login Password</title>
-    <url>/2017/10/29/ByPass-ASA-5505-Login-Password/</url>
-    <content><![CDATA[<p>You can never refuse the free stuff from work. This is a decommissioned firewall unit from a branch office. This ASA 5505 unit has an basic license with 512 MB RAM and an AMD 500MHz Geode CPU.</p>
-<p>On this tutorial, I will show you how to reset/bypass the password on this unit.</p>
-<a id="more"></a>
-
-<p>Here is the detail version information about this unit.</p>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/1.png" class="">
-
-<h4 id="Step-1-Connect-Unit-to-Your-Device"><a href="#Step-1-Connect-Unit-to-Your-Device" class="headerlink" title="Step 1 Connect Unit to Your Device"></a>Step 1 Connect Unit to Your Device</h4><p>Locate the console port on the ASA unit – Marked Blue on the device, and use a Cisco serial cable connect to your desktop serial port.<br>Cable looks like this</p>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/2.jfif" class="">
-
-<p>Once that is done, open your device manager and look under “Ports(COM&amp;LPT)” section, we will need to find out the correct COM number. Make sure you connected before move on to the next step.  </p>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/1-5.png" class="">
-
-
-<h4 id="Step-2-Turn-it-off"><a href="#Step-2-Turn-it-off" class="headerlink" title="Step 2 Turn it off"></a>Step 2 Turn it off</h4><p>Unplug the power to turn it off, and then power it back on.</p>
-<h4 id="Step-3-ROMMON-Mode"><a href="#Step-3-ROMMON-Mode" class="headerlink" title="Step 3 ROMMON Mode"></a>Step 3 ROMMON Mode</h4><p>Taping “Escape” Key while the device is booting, you will be guided into ROMMON mode, it looks like this.</p>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/3.png" class="">
-
-<h4 id="Step-4-Set-the-Register-Value"><a href="#Step-4-Set-the-Register-Value" class="headerlink" title="Step 4 Set the Register Value"></a>Step 4 Set the Register Value</h4><p>This commandwill set the ASA to ignore the startup configuration. Type the following commands to update the configuration Register value:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rommon #0&gt; confreg 0x41</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rommon #1&gt; confreg</span><br></pre></td></tr></table></figure>
-<p> Accept the default values for all settings, except for the “disable system configuration?” value; at that prompt, enter Y.</p>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/4.png" class="">
-
-
-<h4 id="Step-5-Boot-the-Device"><a href="#Step-5-Boot-the-Device" class="headerlink" title="Step 5 Boot the Device"></a>Step 5 Boot the Device</h4><p>Issues following command to continue boot process for the device.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rommon #2&gt; boot</span><br></pre></td></tr></table></figure>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/5.png" class="">
-
-<h4 id="Step-6-Enter-EXEC-mode"><a href="#Step-6-Enter-EXEC-mode" class="headerlink" title="Step 6 Enter EXEC mode"></a>Step 6 Enter EXEC mode</h4><p>At this point, password should be blank now. Once system is up, enter</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa&gt; en</span><br></pre></td></tr></table></figure>
-<p>With “blank” password to enter EXEC mode— Just hit enter key, there is no Password.</p>
-<h4 id="Step-7-Copy-Start-up-Config-to-Running-Config"><a href="#Step-7-Copy-Start-up-Config-to-Running-Config" class="headerlink" title="Step 7 Copy Start-up Config to Running Config"></a>Step 7 Copy Start-up Config to Running Config</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa# copy startup-config running-config</span><br></pre></td></tr></table></figure>
-<h4 id="Step-8-optional-Set-a-New-Password"><a href="#Step-8-optional-Set-a-New-Password" class="headerlink" title="Step 8 (optional) Set a New Password"></a>Step 8 (optional) Set a New Password</h4><p>This step is optional, depending on your needs.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa# conf t</span><br><span class="line">ciscoasa(config)# password devicepassword</span><br><span class="line">ciscoasa(config)# enable password EXECmodepassword</span><br><span class="line">ciscoasa(config)# username orange password userorangepassword</span><br></pre></td></tr></table></figure>
-<h4 id="Step-9-Set-the-Register-Back"><a href="#Step-9-Set-the-Register-Back" class="headerlink" title="Step 9 Set the Register Back"></a>Step 9 Set the Register Back</h4><p>In order to boot normally, we need to reset the register value</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa(config)# config-register 0x1</span><br></pre></td></tr></table></figure>
-<h4 id="Step-10-Save-the-Settings-amp-All-Done"><a href="#Step-10-Save-the-Settings-amp-All-Done" class="headerlink" title="Step 10 Save the Settings &amp; All Done!"></a>Step 10 Save the Settings &amp; All Done!</h4><p>Copy running-config to startup-config and reload, you are all done!</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">write mem</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">reload</span><br></pre></td></tr></table></figure>
-<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/6.png" class="">
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Router</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Meraki MR18 OpenWRT</title>
-    <url>/2019/02/15/Meraki-MR18-OpenWRT/</url>
-    <content><![CDATA[<p>Cisco Meraki enterprise network is a cloud-managed IT company, their product include wireless, switching, security, enterprise mobility management and security cameras, all centrally managed from the web. Meraki MR18 offers great performance overall for small home/office deployments.</p>
-<p>However in order to using their product, we need to purchase a license for each devices, which does not work really well in the home environment. Thanks to the OpenWRT project, we are able to bring these Meraki equipment back to live.</p>
-<a id="more"></a>
-
-<p>This is a complete guide to flash OpenWRT firmware into a MR18 unit.</p>
-<p>All the firmware files, please navigate to OpenWRT official site for downloads <a href="https://openwrt.org/toh/meraki/mr18" target="_blank" rel="noopener">“Click Me”</a></p>
-<h4 id="Prerequisite"><a href="#Prerequisite" class="headerlink" title="Prerequisite"></a>Prerequisite</h4><ol>
-<li>MR18</li>
-<li>UART cable</li>
-<li>local HTTP server</li>
-<li>A router (extra one will be great, you need to keep this router offline during the whole flash process)</li>
-</ol>
-<p>Meraki device will try to upgrade their firmware as soon as they have internet access. Keep them offline.</p>
-<h4 id="Step-1-Connect-the-UART-port-and-power-on"><a href="#Step-1-Connect-the-UART-port-and-power-on" class="headerlink" title="Step 1 Connect the UART port and power on"></a>Step 1 Connect the UART port and power on</h4><p>Flip the unit over, remove the 4 rubber feet on the bottom to expose the screws. Remove these screws we will see the “Heart” of this AP unit.</p>
-<p>Grab your UART cable and connect these cable accordingly.</p>
-<img src="/2019/02/15/Meraki-MR18-OpenWRT/1.png" class="">
-
-<h4 id="Step-2-Locate-the-Version-Number-of-This-Device"><a href="#Step-2-Locate-the-Version-Number-of-This-Device" class="headerlink" title="Step 2 Locate the Version Number of This Device"></a>Step 2 Locate the Version Number of This Device</h4><p>With the UART cable plugged in, open your console and find the correct COM port and connect to it with the speed (baud) 115200</p>
-<p> While the device is booting, we can see something like this</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;Meraki&gt; odm fw_version</span><br><span class="line">24-201611211457-G69d4dc09-mantua</span><br></pre></td></tr></table></figure>
-<p>According to the official site, this version can flash with method C.</p>
-<h4 id="Step-3-Connect-your-MR18-to-Offline-Router"><a href="#Step-3-Connect-your-MR18-to-Offline-Router" class="headerlink" title="Step 3 Connect your MR18 to Offline Router"></a>Step 3 Connect your MR18 to Offline Router</h4><p>Grab your router and connect that with your MR18 and your laptop, make sure they are both located in the same network/vlan.</p>
-<h4 id="Step-4-Level-2-Reset-for-MR18"><a href="#Step-4-Level-2-Reset-for-MR18" class="headerlink" title="Step 4 Level 2 Reset for MR18"></a>Step 4 Level 2 Reset for MR18</h4><p>Hold the reset button on the MR18 for 10+ seconds. You should see the LED blink, and then turn off. Once the LED turns off you can stop holding the reset button. This does a “Level 2” reset and removes any configs from the access point.</p>
-<h4 id="Step-5-Prepare-Files-for-Flashing"><a href="#Step-5-Prepare-Files-for-Flashing" class="headerlink" title="Step 5 Prepare Files for Flashing"></a>Step 5 Prepare Files for Flashing</h4><p>Once the MR18 booted, start a HTTP server (on port 80) on your personal computer in the same directory as the firmware files. If you are running Linux like me, this can be done using the below example: I know, I know, python2 is longer supported..</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;servernetworktech.com&#x2F;uploads&#x2F;files&#x2F;MR18-LEDE.tar.gz</span><br><span class="line">tar xzvf .&#x2F;MR18-LEDE.tar.gz</span><br><span class="line">cd .&#x2F;MR18-LEDE&#x2F;</span><br><span class="line">sudo python2 -m SimpleHTTPServer 80</span><br></pre></td></tr></table></figure>
-<p>If you don’t have Python2 install, please use following command to perform the install.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install python2</span><br></pre></td></tr></table></figure>
-<h4 id="Step-6-Load-the-firmware-to-MR18"><a href="#Step-6-Load-the-firmware-to-MR18" class="headerlink" title="Step 6 Load the firmware to MR18"></a>Step 6 Load the firmware to MR18</h4><p>Once HTTP server started, you can then load this image to the “part2” partition on the MR18. This is done with the following</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">odm firmware part2  192.168.1.10:80&#x2F;lede-ar71xx-nand-mr18-initramfs-kernel.bin</span><br></pre></td></tr></table></figure>
-<p>Note: Replace 192.168.1.10 with your laptop’s IP.</p>
-<p>If you do it correctly, you will see the following on the UART console window</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;Meraki&gt; odm firmware part2 192.168.1.248:80&#x2F;lede-ar71xx-nand-mr18-initramfs-kernel.bin</span><br><span class="line">Connecting to 20.10.1.248:80 (20.10.1.248:80)</span><br><span class="line">firmware.tmp         100% |*******************************|  7169k  0:00:00 ETA</span><br><span class="line">Erasing 128 Kibyte @ 7e0000 -- 100 % complete</span><br><span class="line">Writing data to block 0 at offset 0x0</span><br><span class="line">Writing data to block 1 at offset 0x20000</span><br><span class="line">Writing data to block 2 at offset 0x40000</span><br><span class="line">Writing data to block 3 at offset 0x60000</span><br><span class="line">Writing data to block 4 at offset 0x80000</span><br><span class="line">Writing data to block 5 at offset 0xa0000</span><br><span class="line">Writing data to block 6 at offset 0xc0000</span><br><span class="line">Writing data to block 7 at offset 0xe0000</span><br><span class="line">Writing data to block 8 at offset 0x100000</span><br><span class="line">Writing data to block 9 at offset 0x120000</span><br><span class="line">Writing data to block 10 at offset 0x140000</span><br><span class="line">Writing data to block 11 at offset 0x160000</span><br><span class="line">Writing data to block 12 at offset 0x180000</span><br><span class="line">Writing data to block 13 at offset 0x1a0000</span><br><span class="line">Writing data to block 14 at offset 0x1c0000</span><br><span class="line">Writing data to block 15 at offset 0x1e0000</span><br><span class="line">Writing data to block 16 at offset 0x200000</span><br><span class="line">Writing data to block 17 at offset 0x220000</span><br><span class="line">Writing data to block 18 at offset 0x240000</span><br><span class="line">Writing data to block 19 at offset 0x260000</span><br><span class="line">Writing data to block 20 at offset 0x280000</span><br><span class="line">Writing data to block 21 at offset 0x2a0000</span><br><span class="line">Writing data to block 22 at offset 0x2c0000</span><br><span class="line">Writing data to block 23 at offset 0x2e0000</span><br><span class="line">Writing data to block 24 at offset 0x300000</span><br><span class="line">Writing data to block 25 at offset 0x320000</span><br><span class="line">Writing data to block 26 at offset 0x340000</span><br><span class="line">Writing data to block 27 at offset 0x360000</span><br><span class="line">Writing data to block 28 at offset 0x380000</span><br><span class="line">Writing data to block 29 at offset 0x3a0000</span><br><span class="line">Writing data to block 30 at offset 0x3c0000</span><br><span class="line">Writing data to block 31 at offset 0x3e0000</span><br><span class="line">Writing data to block 32 at offset 0x400000</span><br><span class="line">Writing data to block 33 at offset 0x420000</span><br><span class="line">Writing data to block 34 at offset 0x440000</span><br><span class="line">Writing data to block 35 at offset 0x460000</span><br><span class="line">Writing data to block 36 at offset 0x480000</span><br><span class="line">Writing data to block 37 at offset 0x4a0000</span><br><span class="line">Writing data to block 38 at offset 0x4c0000</span><br><span class="line">Writing data to block 39 at offset 0x4e0000</span><br><span class="line">Writing data to block 40 at offset 0x500000</span><br><span class="line">Writing data to block 41 at offset 0x520000</span><br><span class="line">Writing data to block 42 at offset 0x540000</span><br><span class="line">Writing data to block 43 at offset 0x560000</span><br><span class="line">Writing data to block 44 at offset 0x580000</span><br><span class="line">Writing data to block 45 at offset 0x5a0000</span><br><span class="line">Writing data to block 46 at offset 0x5c0000</span><br><span class="line">Writing data to block 47 at offset 0x5e0000</span><br><span class="line">Writing data to block 48 at offset 0x600000</span><br><span class="line">Writing data to block 49 at offset 0x620000</span><br><span class="line">Writing data to block 50 at offset 0x640000</span><br><span class="line">Writing data to block 51 at offset 0x660000</span><br><span class="line">Writing data to block 52 at offset 0x680000</span><br><span class="line">Writing data to block 53 at offset 0x6a0000</span><br><span class="line">Writing data to block 54 at offset 0x6c0000</span><br><span class="line">Writing data to block 55 at offset 0x6e0000</span><br><span class="line">Writing data to block 56 at offset 0x700000</span><br><span class="line">Successfully updated part2 to 20.10.1.248:80&#x2F;lede-ar71xx-nand-mr18-initramfs-kernel.bin</span><br><span class="line">&lt;Meraki&gt;</span><br></pre></td></tr></table></figure>
-<p>If you don’t know which IP that Meraki gets, please login to your router and find out.</p>
-<h4 id="Step-7-Start-MR18-with-number-2-key-pressed"><a href="#Step-7-Start-MR18-with-number-2-key-pressed" class="headerlink" title="Step 7 Start MR18 with number 2 key pressed"></a>Step 7 Start MR18 with number 2 key pressed</h4><p>Once uploading was completed, remove power from the Meraki MR18. Now that power is removed, in your UART session hold down “2” on your keyboard while applying power. This should now boot you into the initramfs image you just flashed to the MR18.</p>
-<p>For the reason why “2” need to pressed and hold,</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">5.974140] kmodloader: loading kernel modules from &#x2F;etc&#x2F;modules-boot.d&#x2F;*</span><br><span class="line">2[    5.983117] kmodloader: done loading kernel modules from &#x2F;etc&#x2F;modules-boot.d&#x2F;*</span><br><span class="line">[    5.991412] init: - preinit -</span><br><span class="line">2222222[    6.194014] IPv6: ADDRCONF(NETDEV_UP): eth0: link is not ready</span><br><span class="line">2Press the [f] key and hit [enter] to enter failsafe mode</span><br><span class="line">Press the [1], [2], [3] or [4] key and hit [enter] to select the debug level</span><br><span class="line">22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222[    9.320079] procd: - early -</span><br><span class="line">[    9.323075] procd: - watchdog -</span><br><span class="line">222222222222222222[    9.865256] procd: - ubus -</span><br><span class="line">22[    9.919344] procd: - init -</span><br><span class="line">Please press Enter to activate this console.</span><br><span class="line">2222[   10.053565] kmodloader: loading kernel modules from &#x2F;etc&#x2F;modules.d&#x2F;*</span><br><span class="line">2[   10.063282] ip6_tables: (C) 2000-2006 Netfilter Core Team</span><br><span class="line">[   10.077192] Loading modules backported from Linux version wt-2017-01-31-0-ge882dff19e7f</span><br><span class="line">[   10.085355] Backport generated by backports.git backports-20160324-13-g24da7d3c</span><br><span class="line">2[   10.095128] ip_tables: (C) 2000-2006 Netfilter Core Team</span><br><span class="line">[   10.106462] nf_conntrack version 0.5.0 (1954 buckets, 7816 max)</span><br><span class="line">2[   10.148845] xt_time: kernel timezone is -0000</span><br><span class="line">22[   10.197095] PPP generic driver version 2.4.2</span><br><span class="line">[   10.203387] NET: Registered protocol family 24</span><br></pre></td></tr></table></figure>
-<h4 id="Step-8-Connect-to-your-PC-directly"><a href="#Step-8-Connect-to-your-PC-directly" class="headerlink" title="Step 8 Connect to your PC directly"></a>Step 8 Connect to your PC directly</h4><p>With the snapshot being uploaded, unplug the MR18 from your router, and directly wire your computer to it. Once wired, you should get a IP from the MR18.</p>
-<p>Now that recovery is flashed, open a browser on your computer and navigate to <a href="http://192.168.1.1" target="_blank" rel="noopener">http://192.168.1.1</a>. Once signed into LuCI, you can then flash the current sysupgrade image for the MR18.</p>
-<p>Here is what is happening in the background. Once flashed, you can input any busybox commands and execute as root here. It also showed you that this unit has an ip now, 192.168.1.1.</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[   17.536270] kmodloader: done loading kernel modules from &#x2F;etc&#x2F;modules.d&#x2F;*</span><br><span class="line">[   23.768242] device eth0 entered promiscuous mode</span><br><span class="line">[   23.785955] IPv6: ADDRCONF(NETDEV_UP): br-lan: link is not ready</span><br><span class="line">[   24.406947] eth0: link up (1000Mbps&#x2F;Full duplex)</span><br><span class="line">[   24.411675] br-lan: port 1(eth0) entered forwarding state</span><br><span class="line">[   24.417211] br-lan: port 1(eth0) entered forwarding state</span><br><span class="line">[   24.458978] IPv6: ADDRCONF(NETDEV_CHANGE): br-lan: link becomes ready</span><br><span class="line">[   26.415041] br-lan: port 1(eth0) entered forwarding state</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BusyBox v1.26.2 () built-in shell (ash)</span><br><span class="line"></span><br><span class="line">     _________</span><br><span class="line">    &#x2F;        &#x2F;\      _    ___ ___  ___</span><br><span class="line">   &#x2F;  LE    &#x2F;  \    | |  | __|   \| __|</span><br><span class="line">  &#x2F;    DE  &#x2F;    \   | |__| _|| |) | _|</span><br><span class="line"> &#x2F;________&#x2F;  LE  \  |____|___|___&#x2F;|___|                      lede-project.org</span><br><span class="line"> \        \   DE &#x2F;</span><br><span class="line">  \    LE  \    &#x2F;  -----------------------------------------------------------</span><br><span class="line">   \  DE    \  &#x2F;    Reboot (SNAPSHOT, r4125-83e4ed3)</span><br><span class="line">    \________\&#x2F;    -----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D; WARNING! &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">There is no root password defined on this device!</span><br><span class="line">Use the &quot;passwd&quot; command to set up a new password</span><br><span class="line">in order to prevent unauthorized SSH logins.</span><br><span class="line">--------------------------------------------------</span><br><span class="line">root@LEDE:&#x2F;# ifconfig</span><br><span class="line">br-lan    Link encap:Ethernet  HWaddr 00:18:0A:F7:B9:80  </span><br><span class="line">          inet addr:192.168.1.1  Bcast:192.168.1.255  Mask:255.255.255.0</span><br><span class="line">          inet6 addr: fdd1:846:f940::1&#x2F;60 Scope:Global</span><br><span class="line">          inet6 addr: fe80::218:aff:fef7:b980&#x2F;64 Scope:Link</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</span><br><span class="line">          RX packets:3300 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:3161 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:1000</span><br><span class="line">          RX bytes:233588 (228.1 KiB)  TX bytes:247533 (241.7 KiB)</span><br></pre></td></tr></table></figure>
-<h4 id="Step-9-Well-Done"><a href="#Step-9-Well-Done" class="headerlink" title="Step 9 Well Done"></a>Step 9 Well Done</h4><p>As this point, you have Successfully flash the firmware with OpenWRT firmware.<br>Login to the web, and flash with the openwrt-18.06.4-ar71xx-nand-mr18-squashfs-sysupgrade.tar, your MR18 should reboot and be fully running OpenWrt/LEDE!</p>
-<h4 id="April-9-2020-UPDATE"><a href="#April-9-2020-UPDATE" class="headerlink" title="April 9 2020 UPDATE"></a>April 9 2020 UPDATE</h4><p>One of my customer saw my post about this flash process, he reached out to me and bring me a MR18 unit for replacing the firmware.<br>Luckily, the version that he purchased was 25, which I can use the method C to flash the firmware easily.<br>That unit has version number</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">boot 66 build 25-201712141532-Gobb86dd3-hamaki board ar7100</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Network</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Wireless</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Meraki MX60 GateWay OpenWRT</title>
     <url>/2019/03/20/Meraki-MX60-GateWay-OpenWRT/</url>
     <content><![CDATA[<p>The Meraki MX60 is an enterprise security appliance designed for distributed deployments that require remote administration. It is ideal for network administrators who demand both ease of deployment and a state-of-the-art feature set.</p>
@@ -232,6 +69,117 @@
       </tags>
   </entry>
   <entry>
+    <title>ByPass ASA 5505 Login Password</title>
+    <url>/2017/10/29/ByPass-ASA-5505-Login-Password/</url>
+    <content><![CDATA[<p>You can never refuse the free stuff from work. This is a decommissioned firewall unit from a branch office. This ASA 5505 unit has an basic license with 512 MB RAM and an AMD 500MHz Geode CPU.</p>
+<p>On this tutorial, I will show you how to reset/bypass the password on this unit.</p>
+<a id="more"></a>
+
+<p>Here is the detail version information about this unit.</p>
+
+
+<h4 id="Step-1-Connect-Unit-to-Your-Device"><a href="#Step-1-Connect-Unit-to-Your-Device" class="headerlink" title="Step 1 Connect Unit to Your Device"></a>Step 1 Connect Unit to Your Device</h4><p>Locate the console port on the ASA unit – Marked Blue on the device, and use a Cisco serial cable connect to your desktop serial port.<br>Cable looks like this</p>
+<img src="/2017/10/29/ByPass-ASA-5505-Login-Password/2.jfif" class="">
+
+<p>Once that is done, open your device manager and look under “Ports(COM&amp;LPT)” section, we will need to find out the correct COM number. Make sure you connected before move on to the next step.  </p>
+
+
+
+<h4 id="Step-2-Turn-it-off"><a href="#Step-2-Turn-it-off" class="headerlink" title="Step 2 Turn it off"></a>Step 2 Turn it off</h4><p>Unplug the power to turn it off, and then power it back on.</p>
+<h4 id="Step-3-ROMMON-Mode"><a href="#Step-3-ROMMON-Mode" class="headerlink" title="Step 3 ROMMON Mode"></a>Step 3 ROMMON Mode</h4><p>Taping “Escape” Key while the device is booting, you will be guided into ROMMON mode, it looks like this.</p>
+
+
+<h4 id="Step-4-Set-the-Register-Value"><a href="#Step-4-Set-the-Register-Value" class="headerlink" title="Step 4 Set the Register Value"></a>Step 4 Set the Register Value</h4><p>This commandwill set the ASA to ignore the startup configuration. Type the following commands to update the configuration Register value:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rommon #0&gt; confreg 0x41</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rommon #1&gt; confreg</span><br></pre></td></tr></table></figure>
+<p> Accept the default values for all settings, except for the “disable system configuration?” value; at that prompt, enter Y.</p>
+
+
+
+<h4 id="Step-5-Boot-the-Device"><a href="#Step-5-Boot-the-Device" class="headerlink" title="Step 5 Boot the Device"></a>Step 5 Boot the Device</h4><p>Issues following command to continue boot process for the device.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rommon #2&gt; boot</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Step-6-Enter-EXEC-mode"><a href="#Step-6-Enter-EXEC-mode" class="headerlink" title="Step 6 Enter EXEC mode"></a>Step 6 Enter EXEC mode</h4><p>At this point, password should be blank now. Once system is up, enter</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa&gt; en</span><br></pre></td></tr></table></figure>
+<p>With “blank” password to enter EXEC mode— Just hit enter key, there is no Password.</p>
+<h4 id="Step-7-Copy-Start-up-Config-to-Running-Config"><a href="#Step-7-Copy-Start-up-Config-to-Running-Config" class="headerlink" title="Step 7 Copy Start-up Config to Running Config"></a>Step 7 Copy Start-up Config to Running Config</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa# copy startup-config running-config</span><br></pre></td></tr></table></figure>
+<h4 id="Step-8-optional-Set-a-New-Password"><a href="#Step-8-optional-Set-a-New-Password" class="headerlink" title="Step 8 (optional) Set a New Password"></a>Step 8 (optional) Set a New Password</h4><p>This step is optional, depending on your needs.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa# conf t</span><br><span class="line">ciscoasa(config)# password devicepassword</span><br><span class="line">ciscoasa(config)# enable password EXECmodepassword</span><br><span class="line">ciscoasa(config)# username orange password userorangepassword</span><br></pre></td></tr></table></figure>
+<h4 id="Step-9-Set-the-Register-Back"><a href="#Step-9-Set-the-Register-Back" class="headerlink" title="Step 9 Set the Register Back"></a>Step 9 Set the Register Back</h4><p>In order to boot normally, we need to reset the register value</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ciscoasa(config)# config-register 0x1</span><br></pre></td></tr></table></figure>
+<h4 id="Step-10-Save-the-Settings-amp-All-Done"><a href="#Step-10-Save-the-Settings-amp-All-Done" class="headerlink" title="Step 10 Save the Settings &amp; All Done!"></a>Step 10 Save the Settings &amp; All Done!</h4><p>Copy running-config to startup-config and reload, you are all done!</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">write mem</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">reload</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Router</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Define SCCM Collections for OS Upgrades</title>
+    <url>/2020/04/09/Define-SCCM-Collections-for-OS-Upgrades/</url>
+    <content><![CDATA[<p>Collections help you organize resources into manageable units. You can create collections to match your client management needs, and to perform operations on multiple resources at one time. In order to perform the OS upgrades for all targeted clients, collection would be the best way to locate them. </p>
+<p>This tutorial will show you how to locate any active but out-of-date clients by using the OS version number. </p>
+<a id="more"></a>
+
+<p>Task: locate all Windows 10 clients have version 1803 and/or eariler. </p>
+<h4 id="Step-1-Create-a-new-Collection-in-SCCM"><a href="#Step-1-Create-a-new-Collection-in-SCCM" class="headerlink" title="Step 1 Create a new Collection in SCCM"></a>Step 1 Create a new Collection in SCCM</h4><p>Navigate to the correct collection and right click on any empty area</p>
+<img src="/2020/04/09/Define-SCCM-Collections-for-OS-Upgrades/image001.png" class="">
+
+<h4 id="Step-2-Define-the-Scope"><a href="#Step-2-Define-the-Scope" class="headerlink" title="Step 2 Define the Scope"></a>Step 2 Define the Scope</h4><p>Select the correct collection for locating these PCs, they are all under “ALL Workstations”. In some of cases, you may do “ALL xx location workstations” OR “All servers”. </p>
+<img src="/2020/04/09/Define-SCCM-Collections-for-OS-Upgrades/image002.png" class="">
+
+<h4 id="Step-3-Define-the-Membership-Rules"><a href="#Step-3-Define-the-Membership-Rules" class="headerlink" title="Step 3 Define the Membership Rules"></a>Step 3 Define the Membership Rules</h4><p>Follow the steps icon, you will need to locate the Operating system version number. </p>
+<img src="/2020/04/09/Define-SCCM-Collections-for-OS-Upgrades/image004.png" class="">
+
+<h4 id="Step-4-Define-the-Operating-System-number"><a href="#Step-4-Define-the-Operating-System-number" class="headerlink" title="Step 4 Define the Operating System number"></a>Step 4 Define the Operating System number</h4><p>Windows 10 version 1803 has built number 17134, you may locate some common numbers on this table. </p>
+<p>Windows 10 (20H2)    10.0.19042<br>Windows 10 (2004)    10.0.19041<br>Windows 10 (1909)    10.0.18363<br>Windows 10 (1903)    10.0.18362<br>Windows 10 (1809)    10.0.17763<br>Windows 10 (1803)    10.0.17134<br>Windows 10 (1709)    10.0.16299<br>Windows 10 (1703)    10.0.15063<br>Windows 10 (1607)    10.0.14393<br>Windows 10 (1511)    10.0.10586<br>Windows 10           10.0.10240</p>
+<img src="/2020/04/09/Define-SCCM-Collections-for-OS-Upgrades/image006.png" class="">
+
+<h4 id="Step-5-Schedule-the-Membership-updates"><a href="#Step-5-Schedule-the-Membership-updates" class="headerlink" title="Step 5 Schedule the Membership updates"></a>Step 5 Schedule the Membership updates</h4><p>Default value is used on this task, 7 days is fine, but you may change to sooner. </p>
+<img src="/2020/04/09/Define-SCCM-Collections-for-OS-Upgrades/image007.png" class="">
+
+<h4 id="Step-6-Confirm-and-finish"><a href="#Step-6-Confirm-and-finish" class="headerlink" title="Step 6 Confirm and finish"></a>Step 6 Confirm and finish</h4><img src="/2020/04/09/Define-SCCM-Collections-for-OS-Upgrades/image008.png" class="">
+<img src="/2020/04/09/Define-SCCM-Collections-for-OS-Upgrades/image009.png" class="">
+
+<h4 id="You-are-Done"><a href="#You-are-Done" class="headerlink" title="You are Done!"></a>You are Done!</h4><p>At this point, you have successfully created the collection, you may need to wait around 30 mins before seen any members. </p>
+]]></content>
+      <categories>
+        <category>System Administration</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>SCCM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hidden Switches for BIOS Updates</title>
+    <url>/2020/06/20/Hidden-Switches-for-BIOS-Updates/</url>
+    <content><![CDATA[<p>As part of the summer project, it is important to keep all of end clients up to date. This guide show some hidden switches that available for us when releasing the updates. </p>
+<a id="more"></a> 
+
+
+<p>Task: Update system BIOS with SCCM.  </p>
+<p>Here are the switches that we can use during the configuration.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;? &#x2F;h &#x3D;help screen</span><br><span class="line">&#x2F;s - suppress user interface</span><br><span class="line">&#x2F;s &#x2F;f - override soft dependency errors during BIOS update</span><br><span class="line">&#x2F;s &#x2F;r - reboot system to complete the update</span><br><span class="line">&#x2F;s &#x2F;l&#x3D;&lt;path&gt; - log messages to this file</span><br><span class="line">&#x2F;p&#x3D;&lt;password&gt; - provide the BIOS password if needed</span><br><span class="line">if you use &#x2F;r in the exe line it will restart and the exit code &#x3D; 6 (Rebooting System)</span><br><span class="line">if you don&#39;t use &#x2F;r it will complete and give you exit code &#x3D; 2 (Reboot Required)</span><br><span class="line">if you use &#x2F;l&#x3D;&quot;PathToLogFile&quot; it will show you some useful information including its exit code and various component version numbers.</span><br></pre></td></tr></table></figure>
+
+<p>As an example, this what I use for silent installaton with SCCM: </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;OptiPlex_3060_1.2.17.exe&quot; &#x2F;s &#x2F;p&#x3D;Password &#x2F;l&#x3D;C:\Temp\OptiPlex_1.2.17_3060.log</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>System Administration</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>SCCM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Old Man&#39;s New Home HP 2915-8G</title>
     <url>/2019/04/02/Old-Man-s-New-Home-HP-2915-8G/</url>
     <content><![CDATA[<p>The HP ProCurve 2915-8G-PoE J9562A and 2615-8-PoE Switches are multiport switches that can be used to build high-performance switched workgroup networks.</p>
@@ -272,6 +220,213 @@
       </categories>
       <tags>
         <tag>Switch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Toying My Cloud</title>
+    <url>/2015/09/15/Toying-My-Cloud/</url>
+    <content><![CDATA[<p>My Cloud™ Home is an easy-to-use personal cloud storage device that plugs directly into your router at home so you can save all your digital content in one central place. Unlike a NAS, it’s a simple centralized solution to ….</p>
+<p>More detail  <a href="https://shop.westerndigital.com/products/cloud-storage/wd-my-cloud-home" target="_blank" rel="noopener">Click me to official site</a></p>
+<p>Instead of continue doing sales job today, we are going to take look at a few interests points.</p>
+<a id="more"></a>
+
+<h4 id="Interests-Points-1-OS-amp-SSH"><a href="#Interests-Points-1-OS-amp-SSH" class="headerlink" title="Interests Points 1 . OS &amp; SSH"></a>Interests Points 1 . OS &amp; SSH</h4><p>A computer product offers certain services it must a hardware and some software. Logging on with ssh or perform Nmap scanning will allow us to see what is in the back. After reviewing the official documentation online, we know that the default user is root with password Welc0me. In order to change that, we need to first turn on ssh access to My Cloud box.</p>
+<h5 id="Turn-On-SSH"><a href="#Turn-On-SSH" class="headerlink" title="Turn On SSH"></a>Turn On SSH</h5><p>Navigate to the settings page and turn ON  “SSH”</p>
+<img src="/2015/09/15/Toying-My-Cloud/SSH_config.jpg" class="">
+
+<h5 id="Change-Password"><a href="#Change-Password" class="headerlink" title="Change Password"></a>Change Password</h5><p>I was using windows environment on this demo, and putty was downloaded previously. Login by entering the IP address listed on the configuration page with the default password. Once you have login via Putty, issues the following commands to change the root password.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">passwd root</span><br></pre></td></tr></table></figure>
+<h4 id="Interests-Points-2-SSH-key-file-login"><a href="#Interests-Points-2-SSH-key-file-login" class="headerlink" title="Interests Points 2 . SSH key file login"></a>Interests Points 2 . SSH key file login</h4><p>Since we know this is debian system, we can try to enable the ssh login via keys to harden the device. The reason of utilizing this method is my network condition, I was using the campus dorms room’s network, where I didn’t have control of anything, and we did have some students who loves “scanning” the network with brute-force attack..</p>
+<h5 id="Using-Key-Gen"><a href="#Using-Key-Gen" class="headerlink" title="Using Key-Gen"></a>Using Key-Gen</h5><p>Download and run the Putty key-gen from <a href="https://www.puttygen.com/" target="_blank" rel="noopener">Here</a>  </p>
+<h5 id="Generating-the-SSH-Key-Pairs"><a href="#Generating-the-SSH-Key-Pairs" class="headerlink" title="Generating the SSH Key Pairs"></a>Generating the SSH Key Pairs</h5><p>Click Generate on the key-gen software to start the processes. It will looks like this when it was completed.</p>
+<img src="/2015/09/15/Toying-My-Cloud/3.png" class="">
+
+<p>Save both your public key and private key somewhere save on your file sever, NEVER share your private key with anyone.</p>
+<h5 id="Import-SSH-key-into-the-box"><a href="#Import-SSH-key-into-the-box" class="headerlink" title="Import SSH key into the box"></a>Import SSH key into the box</h5><p>If you are continue using root to login, you may create a Directory /root/.ssh/authorized_keys with</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir -p ~&#x2F;.ssh</span><br><span class="line">touch ~&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
+<p>Once finished, open authorized_keys by</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi ~&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
+<p>copy and paste the public key to this file, save, and exit.</p>
+<img src="/2015/09/15/Toying-My-Cloud/4.png" class="">
+
+<p>You are done! This linux box is now support ssh key login.   </p>
+<img src="/2015/09/15/Toying-My-Cloud/6.png" class="">
+<img src="/2015/09/15/Toying-My-Cloud/5.png" class="">
+
+
+<h4 id="Interests-Points-3-Turn-ON-HTTPS-amp-amp-SFTP-connection-Failed"><a href="#Interests-Points-3-Turn-ON-HTTPS-amp-amp-SFTP-connection-Failed" class="headerlink" title="Interests Points 3 . Turn ON HTTPS &amp;&amp; SFTP connection - Failed"></a>Interests Points 3 . Turn ON HTTPS &amp;&amp; SFTP connection - Failed</h4><p>With the better understanding of this slim version of debian Linux,  we might be able to turn on the https and Sftp on this device. HTTP and FTP is used by default on this software version, which it is a security hazard. From a WireShark packet captured we can see the password was submitted and transferred with plain text.<br>HTTP</p>
+<img src="/2015/09/15/Toying-My-Cloud/1.png" class="">
+<p>FTP</p>
+<img src="/2015/09/15/Toying-My-Cloud/2.png" class="">
+
+<h5 id="It-is-NOT-supported-officially"><a href="#It-is-NOT-supported-officially" class="headerlink" title="It is NOT supported officially"></a>It is NOT supported officially</h5><p>Navigate to My Cloud web configuration page,  you will easily see the overall usage and FTP On &amp; OFF button…However, there is NO config or settings anywhere I can go and modify this settings, which provides this box no security feature.</p>
+<h4 id="Interests-Points-4-Misc"><a href="#Interests-Points-4-Misc" class="headerlink" title="Interests Points 4 . Misc"></a>Interests Points 4 . Misc</h4><p>After using Nmap and toying around the box, there is not much services (ports) that this box offers. with limited processing power available, the encrypt and decrypt processes could not be satisfied.<br>Since this is a debian box, tcpdump should still on there…</p>
+<img src="/2015/09/15/Toying-My-Cloud/7.png" class="">
+<img src="/2015/09/15/Toying-My-Cloud/8.jfif" class="">
+
+<p>it looks like they are using these dynamic port 49153 to receiving the data..</p>
+<h4 id="Updates-On-2016"><a href="#Updates-On-2016" class="headerlink" title="Updates On 2016"></a>Updates On 2016</h4><p>Right before sold this unit. I teared it down, it just a fan-less compute board with a 3TB WD RED hard drive inside, not sure about the processor model and amount of ram. This unit was sold in April 2016 due to lack of security, low transferring speed, and no redundancy options.  </p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>NAS</tag>
+        <tag>TCP/IP</tag>
+        <tag>WireShark</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Meraki MR18 OpenWRT</title>
+    <url>/2019/02/15/Meraki-MR18-OpenWRT/</url>
+    <content><![CDATA[<p>Cisco Meraki enterprise network is a cloud-managed IT company, their product include wireless, switching, security, enterprise mobility management and security cameras, all centrally managed from the web. Meraki MR18 offers great performance overall for small home/office deployments.</p>
+<p>However in order to using their product, we need to purchase a license for each devices, which does not work really well in the home environment. Thanks to the OpenWRT project, we are able to bring these Meraki equipment back to live.</p>
+<a id="more"></a>
+
+<p>This is a complete guide to flash OpenWRT firmware into a MR18 unit.</p>
+<p>All the firmware files, please navigate to OpenWRT official site for downloads <a href="https://openwrt.org/toh/meraki/mr18" target="_blank" rel="noopener">“Click Me”</a></p>
+<h4 id="Prerequisite"><a href="#Prerequisite" class="headerlink" title="Prerequisite"></a>Prerequisite</h4><ol>
+<li>MR18</li>
+<li>UART cable</li>
+<li>local HTTP server</li>
+<li>A router (extra one will be great, you need to keep this router offline during the whole flash process)</li>
+</ol>
+<p>Meraki device will try to upgrade their firmware as soon as they have internet access. Keep them offline.</p>
+<h4 id="Step-1-Connect-the-UART-port-and-power-on"><a href="#Step-1-Connect-the-UART-port-and-power-on" class="headerlink" title="Step 1 Connect the UART port and power on"></a>Step 1 Connect the UART port and power on</h4><p>Flip the unit over, remove the 4 rubber feet on the bottom to expose the screws. Remove these screws we will see the “Heart” of this AP unit.</p>
+<p>Grab your UART cable and connect these cable accordingly.</p>
+
+
+<h4 id="Step-2-Locate-the-Version-Number-of-This-Device"><a href="#Step-2-Locate-the-Version-Number-of-This-Device" class="headerlink" title="Step 2 Locate the Version Number of This Device"></a>Step 2 Locate the Version Number of This Device</h4><p>With the UART cable plugged in, open your console and find the correct COM port and connect to it with the speed (baud) 115200</p>
+<p> While the device is booting, we can see something like this</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;Meraki&gt; odm fw_version</span><br><span class="line">24-201611211457-G69d4dc09-mantua</span><br></pre></td></tr></table></figure>
+<p>According to the official site, this version can flash with method C.</p>
+<h4 id="Step-3-Connect-your-MR18-to-Offline-Router"><a href="#Step-3-Connect-your-MR18-to-Offline-Router" class="headerlink" title="Step 3 Connect your MR18 to Offline Router"></a>Step 3 Connect your MR18 to Offline Router</h4><p>Grab your router and connect that with your MR18 and your laptop, make sure they are both located in the same network/vlan.</p>
+<h4 id="Step-4-Level-2-Reset-for-MR18"><a href="#Step-4-Level-2-Reset-for-MR18" class="headerlink" title="Step 4 Level 2 Reset for MR18"></a>Step 4 Level 2 Reset for MR18</h4><p>Hold the reset button on the MR18 for 10+ seconds. You should see the LED blink, and then turn off. Once the LED turns off you can stop holding the reset button. This does a “Level 2” reset and removes any configs from the access point.</p>
+<h4 id="Step-5-Prepare-Files-for-Flashing"><a href="#Step-5-Prepare-Files-for-Flashing" class="headerlink" title="Step 5 Prepare Files for Flashing"></a>Step 5 Prepare Files for Flashing</h4><p>Once the MR18 booted, start a HTTP server (on port 80) on your personal computer in the same directory as the firmware files. If you are running Linux like me, this can be done using the below example: I know, I know, python2 is longer supported..</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;servernetworktech.com&#x2F;uploads&#x2F;files&#x2F;MR18-LEDE.tar.gz</span><br><span class="line">tar xzvf .&#x2F;MR18-LEDE.tar.gz</span><br><span class="line">cd .&#x2F;MR18-LEDE&#x2F;</span><br><span class="line">sudo python2 -m SimpleHTTPServer 80</span><br></pre></td></tr></table></figure>
+<p>If you don’t have Python2 install, please use following command to perform the install.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install python2</span><br></pre></td></tr></table></figure>
+<h4 id="Step-6-Load-the-firmware-to-MR18"><a href="#Step-6-Load-the-firmware-to-MR18" class="headerlink" title="Step 6 Load the firmware to MR18"></a>Step 6 Load the firmware to MR18</h4><p>Once HTTP server started, you can then load this image to the “part2” partition on the MR18. This is done with the following</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">odm firmware part2  192.168.1.10:80&#x2F;lede-ar71xx-nand-mr18-initramfs-kernel.bin</span><br></pre></td></tr></table></figure>
+<p>Note: Replace 192.168.1.10 with your laptop’s IP.</p>
+<p>If you do it correctly, you will see the following on the UART console window</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;Meraki&gt; odm firmware part2 192.168.1.248:80&#x2F;lede-ar71xx-nand-mr18-initramfs-kernel.bin</span><br><span class="line">Connecting to 20.10.1.248:80 (20.10.1.248:80)</span><br><span class="line">firmware.tmp         100% |*******************************|  7169k  0:00:00 ETA</span><br><span class="line">Erasing 128 Kibyte @ 7e0000 -- 100 % complete</span><br><span class="line">Writing data to block 0 at offset 0x0</span><br><span class="line">Writing data to block 1 at offset 0x20000</span><br><span class="line">Writing data to block 2 at offset 0x40000</span><br><span class="line">Writing data to block 3 at offset 0x60000</span><br><span class="line">Writing data to block 4 at offset 0x80000</span><br><span class="line">Writing data to block 5 at offset 0xa0000</span><br><span class="line">Writing data to block 6 at offset 0xc0000</span><br><span class="line">Writing data to block 7 at offset 0xe0000</span><br><span class="line">Writing data to block 8 at offset 0x100000</span><br><span class="line">Writing data to block 9 at offset 0x120000</span><br><span class="line">Writing data to block 10 at offset 0x140000</span><br><span class="line">Writing data to block 11 at offset 0x160000</span><br><span class="line">Writing data to block 12 at offset 0x180000</span><br><span class="line">Writing data to block 13 at offset 0x1a0000</span><br><span class="line">Writing data to block 14 at offset 0x1c0000</span><br><span class="line">Writing data to block 15 at offset 0x1e0000</span><br><span class="line">Writing data to block 16 at offset 0x200000</span><br><span class="line">Writing data to block 17 at offset 0x220000</span><br><span class="line">Writing data to block 18 at offset 0x240000</span><br><span class="line">Writing data to block 19 at offset 0x260000</span><br><span class="line">Writing data to block 20 at offset 0x280000</span><br><span class="line">Writing data to block 21 at offset 0x2a0000</span><br><span class="line">Writing data to block 22 at offset 0x2c0000</span><br><span class="line">Writing data to block 23 at offset 0x2e0000</span><br><span class="line">Writing data to block 24 at offset 0x300000</span><br><span class="line">Writing data to block 25 at offset 0x320000</span><br><span class="line">Writing data to block 26 at offset 0x340000</span><br><span class="line">Writing data to block 27 at offset 0x360000</span><br><span class="line">Writing data to block 28 at offset 0x380000</span><br><span class="line">Writing data to block 29 at offset 0x3a0000</span><br><span class="line">Writing data to block 30 at offset 0x3c0000</span><br><span class="line">Writing data to block 31 at offset 0x3e0000</span><br><span class="line">Writing data to block 32 at offset 0x400000</span><br><span class="line">Writing data to block 33 at offset 0x420000</span><br><span class="line">Writing data to block 34 at offset 0x440000</span><br><span class="line">Writing data to block 35 at offset 0x460000</span><br><span class="line">Writing data to block 36 at offset 0x480000</span><br><span class="line">Writing data to block 37 at offset 0x4a0000</span><br><span class="line">Writing data to block 38 at offset 0x4c0000</span><br><span class="line">Writing data to block 39 at offset 0x4e0000</span><br><span class="line">Writing data to block 40 at offset 0x500000</span><br><span class="line">Writing data to block 41 at offset 0x520000</span><br><span class="line">Writing data to block 42 at offset 0x540000</span><br><span class="line">Writing data to block 43 at offset 0x560000</span><br><span class="line">Writing data to block 44 at offset 0x580000</span><br><span class="line">Writing data to block 45 at offset 0x5a0000</span><br><span class="line">Writing data to block 46 at offset 0x5c0000</span><br><span class="line">Writing data to block 47 at offset 0x5e0000</span><br><span class="line">Writing data to block 48 at offset 0x600000</span><br><span class="line">Writing data to block 49 at offset 0x620000</span><br><span class="line">Writing data to block 50 at offset 0x640000</span><br><span class="line">Writing data to block 51 at offset 0x660000</span><br><span class="line">Writing data to block 52 at offset 0x680000</span><br><span class="line">Writing data to block 53 at offset 0x6a0000</span><br><span class="line">Writing data to block 54 at offset 0x6c0000</span><br><span class="line">Writing data to block 55 at offset 0x6e0000</span><br><span class="line">Writing data to block 56 at offset 0x700000</span><br><span class="line">Successfully updated part2 to 20.10.1.248:80&#x2F;lede-ar71xx-nand-mr18-initramfs-kernel.bin</span><br><span class="line">&lt;Meraki&gt;</span><br></pre></td></tr></table></figure>
+<p>If you don’t know which IP that Meraki gets, please login to your router and find out.</p>
+<h4 id="Step-7-Start-MR18-with-number-2-key-pressed"><a href="#Step-7-Start-MR18-with-number-2-key-pressed" class="headerlink" title="Step 7 Start MR18 with number 2 key pressed"></a>Step 7 Start MR18 with number 2 key pressed</h4><p>Once uploading was completed, remove power from the Meraki MR18. Now that power is removed, in your UART session hold down “2” on your keyboard while applying power. This should now boot you into the initramfs image you just flashed to the MR18.</p>
+<p>For the reason why “2” need to pressed and hold,</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">5.974140] kmodloader: loading kernel modules from &#x2F;etc&#x2F;modules-boot.d&#x2F;*</span><br><span class="line">2[    5.983117] kmodloader: done loading kernel modules from &#x2F;etc&#x2F;modules-boot.d&#x2F;*</span><br><span class="line">[    5.991412] init: - preinit -</span><br><span class="line">2222222[    6.194014] IPv6: ADDRCONF(NETDEV_UP): eth0: link is not ready</span><br><span class="line">2Press the [f] key and hit [enter] to enter failsafe mode</span><br><span class="line">Press the [1], [2], [3] or [4] key and hit [enter] to select the debug level</span><br><span class="line">22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222[    9.320079] procd: - early -</span><br><span class="line">[    9.323075] procd: - watchdog -</span><br><span class="line">222222222222222222[    9.865256] procd: - ubus -</span><br><span class="line">22[    9.919344] procd: - init -</span><br><span class="line">Please press Enter to activate this console.</span><br><span class="line">2222[   10.053565] kmodloader: loading kernel modules from &#x2F;etc&#x2F;modules.d&#x2F;*</span><br><span class="line">2[   10.063282] ip6_tables: (C) 2000-2006 Netfilter Core Team</span><br><span class="line">[   10.077192] Loading modules backported from Linux version wt-2017-01-31-0-ge882dff19e7f</span><br><span class="line">[   10.085355] Backport generated by backports.git backports-20160324-13-g24da7d3c</span><br><span class="line">2[   10.095128] ip_tables: (C) 2000-2006 Netfilter Core Team</span><br><span class="line">[   10.106462] nf_conntrack version 0.5.0 (1954 buckets, 7816 max)</span><br><span class="line">2[   10.148845] xt_time: kernel timezone is -0000</span><br><span class="line">22[   10.197095] PPP generic driver version 2.4.2</span><br><span class="line">[   10.203387] NET: Registered protocol family 24</span><br></pre></td></tr></table></figure>
+<h4 id="Step-8-Connect-to-your-PC-directly"><a href="#Step-8-Connect-to-your-PC-directly" class="headerlink" title="Step 8 Connect to your PC directly"></a>Step 8 Connect to your PC directly</h4><p>With the snapshot being uploaded, unplug the MR18 from your router, and directly wire your computer to it. Once wired, you should get a IP from the MR18.</p>
+<p>Now that recovery is flashed, open a browser on your computer and navigate to <a href="http://192.168.1.1" target="_blank" rel="noopener">http://192.168.1.1</a>. Once signed into LuCI, you can then flash the current sysupgrade image for the MR18.</p>
+<p>Here is what is happening in the background. Once flashed, you can input any busybox commands and execute as root here. It also showed you that this unit has an ip now, 192.168.1.1.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[   17.536270] kmodloader: done loading kernel modules from &#x2F;etc&#x2F;modules.d&#x2F;*</span><br><span class="line">[   23.768242] device eth0 entered promiscuous mode</span><br><span class="line">[   23.785955] IPv6: ADDRCONF(NETDEV_UP): br-lan: link is not ready</span><br><span class="line">[   24.406947] eth0: link up (1000Mbps&#x2F;Full duplex)</span><br><span class="line">[   24.411675] br-lan: port 1(eth0) entered forwarding state</span><br><span class="line">[   24.417211] br-lan: port 1(eth0) entered forwarding state</span><br><span class="line">[   24.458978] IPv6: ADDRCONF(NETDEV_CHANGE): br-lan: link becomes ready</span><br><span class="line">[   26.415041] br-lan: port 1(eth0) entered forwarding state</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BusyBox v1.26.2 () built-in shell (ash)</span><br><span class="line"></span><br><span class="line">     _________</span><br><span class="line">    &#x2F;        &#x2F;\      _    ___ ___  ___</span><br><span class="line">   &#x2F;  LE    &#x2F;  \    | |  | __|   \| __|</span><br><span class="line">  &#x2F;    DE  &#x2F;    \   | |__| _|| |) | _|</span><br><span class="line"> &#x2F;________&#x2F;  LE  \  |____|___|___&#x2F;|___|                      lede-project.org</span><br><span class="line"> \        \   DE &#x2F;</span><br><span class="line">  \    LE  \    &#x2F;  -----------------------------------------------------------</span><br><span class="line">   \  DE    \  &#x2F;    Reboot (SNAPSHOT, r4125-83e4ed3)</span><br><span class="line">    \________\&#x2F;    -----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D; WARNING! &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">There is no root password defined on this device!</span><br><span class="line">Use the &quot;passwd&quot; command to set up a new password</span><br><span class="line">in order to prevent unauthorized SSH logins.</span><br><span class="line">--------------------------------------------------</span><br><span class="line">root@LEDE:&#x2F;# ifconfig</span><br><span class="line">br-lan    Link encap:Ethernet  HWaddr 00:18:0A:F7:B9:80  </span><br><span class="line">          inet addr:192.168.1.1  Bcast:192.168.1.255  Mask:255.255.255.0</span><br><span class="line">          inet6 addr: fdd1:846:f940::1&#x2F;60 Scope:Global</span><br><span class="line">          inet6 addr: fe80::218:aff:fef7:b980&#x2F;64 Scope:Link</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</span><br><span class="line">          RX packets:3300 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:3161 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:1000</span><br><span class="line">          RX bytes:233588 (228.1 KiB)  TX bytes:247533 (241.7 KiB)</span><br></pre></td></tr></table></figure>
+<h4 id="Step-9-Well-Done"><a href="#Step-9-Well-Done" class="headerlink" title="Step 9 Well Done"></a>Step 9 Well Done</h4><p>As this point, you have Successfully flash the firmware with OpenWRT firmware.<br>Login to the web, and flash with the openwrt-18.06.4-ar71xx-nand-mr18-squashfs-sysupgrade.tar, your MR18 should reboot and be fully running OpenWrt/LEDE!</p>
+<h4 id="April-9-2020-UPDATE"><a href="#April-9-2020-UPDATE" class="headerlink" title="April 9 2020 UPDATE"></a>April 9 2020 UPDATE</h4><p>One of my customer saw my post about this flash process, he reached out to me and bring me a MR18 unit for replacing the firmware.<br>Luckily, the version that he purchased was 25, which I can use the method C to flash the firmware easily.<br>That unit has version number</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">boot 66 build 25-201712141532-Gobb86dd3-hamaki board ar7100</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Network</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Wireless</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Using SCCM to Perform Zoom Upgrades</title>
+    <url>/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/</url>
+    <content><![CDATA[<p>Zoom has became our friend since 2015. In order to fully take advantage of the new features that zoom has offered, I needed to keep zoom clients updated on all computers campus wide. This is a comprehensive guide to show you how it is done!   </p>
+<a id="more"></a>
+
+<p>Task: Target all workstations and perform the silence upgrade  </p>
+<h4 id="Step-1-Locate-and-Download-the-MSI-file"><a href="#Step-1-Locate-and-Download-the-MSI-file" class="headerlink" title="Step 1 Locate and Download the MSI file"></a>Step 1 Locate and Download the MSI file</h4><p>Navigate to <a href="https://zoom.us/download" target="_blank" rel="noopener">https://zoom.us/download</a>, and download the MSI for IT admin </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image001.png" class="">
+
+<h4 id="Step-2-Move-the-files-to-Network-location"><a href="#Step-2-Move-the-files-to-Network-location" class="headerlink" title="Step 2 Move the files to Network location"></a>Step 2 Move the files to Network location</h4><p>Launch Explorer++ with network level administrative account, create a new folder under Zoom and rename it to the current release version, and copy the file that you just download from Zoom.us to this folder.  </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image002.png" class="">
+
+<h4 id="Step-3-Create-a-new-application-on-SCCM-management-console"><a href="#Step-3-Create-a-new-application-on-SCCM-management-console" class="headerlink" title="Step 3 Create a new application on SCCM management console."></a>Step 3 Create a new application on SCCM management console.</h4><p>Navigate to \Software Library\Overview\Application Management\Applications\Zoom, right click on any of the empty area, and select create application.  </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image003.png" class="">
+
+<h4 id="Step-4-Select-the-correct-directory"><a href="#Step-4-Select-the-correct-directory" class="headerlink" title="Step 4 Select the correct directory"></a>Step 4 Select the correct directory</h4><p>Select the path for installation package (s), click next when you are done. </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image004.png" class="">
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image005.png" class="">
+
+<h4 id="Step-5-Specify-the-name-and-version-information"><a href="#Step-5-Specify-the-name-and-version-information" class="headerlink" title="Step 5 Specify the name and version information"></a>Step 5 Specify the name and version information</h4><p>For name, software version number is being added at the end of the line. Select install for system, and following string is used for installing: </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">msiexec &#x2F;i &quot;ZoomInstallerFull.msi&quot; &#x2F;quiet &#x2F;qn &#x2F;norestart ZoomAutoUpdate&#x3D;&quot;true&quot; EnableIndependentDataPort&#x3D;1</span><br></pre></td></tr></table></figure>
+
+<p>Click next when we done. </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image006.png" class="">
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image007.png" class="">
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image008.png" class="">
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image009.png" class="">
+
+<h4 id="Step-6-Add-an-icon-to-this-software"><a href="#Step-6-Add-an-icon-to-this-software" class="headerlink" title="Step 6 Add an icon to this software"></a>Step 6 Add an icon to this software</h4><p>With this program selected, right click, and select properties. With the Zoom 5.4.0 Properties window open, select “Software Center” tab. Locate the correct icon and hit open. </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image010.png" class="">
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image011.png" class="">
+
+<h4 id="Step-7-Uninstall-Previous-Version"><a href="#Step-7-Uninstall-Previous-Version" class="headerlink" title="Step 7 Uninstall Previous Version"></a>Step 7 Uninstall Previous Version</h4><p>With the Zoom 5.4.0 Properties window open, select “Supersedence” tab. Under the “New Deployment Type”, Select the “Zoom- Windows Installer (*.msi file)”, and check the “Uninstall” button at the end of the column. </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image012.png" class="">
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image013.png" class="">
+
+<p>Repeat these steps until all previous versions are selected. </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image014.png" class="">
+
+<h4 id="Step-8-Distribute-content-and-deploy-the-software"><a href="#Step-8-Distribute-content-and-deploy-the-software" class="headerlink" title="Step 8 Distribute content and deploy the software"></a>Step 8 Distribute content and deploy the software</h4><p>Software must distributed before deploy. </p>
+<p>Right click this software again and select “Deploy”</p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image015.png" class="">
+
+<p>Select the correct collection</p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image016.png" class="">
+
+<p>Select the desire distribution point or group </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image017.png" class="">
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image018.png" class="">
+
+<h4 id="Step-9-Select-the-installation-behavior-and-Time"><a href="#Step-9-Select-the-installation-behavior-and-Time" class="headerlink" title="Step 9 Select the installation behavior and Time"></a>Step 9 Select the installation behavior and Time</h4><p>In this test deploy, “available” is used for demo. </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image019.png" class="">
+
+<p>Specify the time of releasing </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image020.png" class="">
+
+<p>Specify the installation behavior </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image021.png" class="">
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image022.png" class="">
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image023.png" class="">
+
+<h4 id="Step-10-Job-Done"><a href="#Step-10-Job-Done" class="headerlink" title="Step 10 Job Done."></a>Step 10 Job Done.</h4><p>At this point, software updates has been scheduled. All clients will receive the new software notices and apply the updates accordingly. </p>
+<img src="/2020/08/15/Using-SCCM-to-Perform-Zoom-Upgrades/image024.png" class="">]]></content>
+      <categories>
+        <category>System Administration</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>SCCM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Power Management SCCM</title>
+    <url>/2020/05/02/Power-Management-SCCM/</url>
+    <content><![CDATA[<p>Power management in Configuration Manager enables you to apply power plans to collections of computers in your hierarchy. Configuration Manager defines several power plans, or you can create your own custom power plans.</p>
+<a id="more"></a>
+<p>Task: To further reduce the energy cost during the pandemic, config the power options for energy saving. </p>
+<h4 id="Step-1-Select-the-Collection"><a href="#Step-1-Select-the-Collection" class="headerlink" title="Step 1 Select the Collection"></a>Step 1 Select the Collection</h4><p>Right click on the desired device collection and click “Properties”. </p>
+<img src="/2020/05/02/Power-Management-SCCM/image001.png" class="">
+
+<h4 id="Step-2-Specify-Power-Management-Settings"><a href="#Step-2-Specify-Power-Management-Settings" class="headerlink" title="Step 2 Specify Power Management Settings"></a>Step 2 Specify Power Management Settings</h4><p>Click “Power Management” tab, and configure the settings accordingly. </p>
+<img src="/2020/05/02/Power-Management-SCCM/image002.png" class="">
+
+<h4 id="Step-3-Further-editing-the-power-settings"><a href="#Step-3-Further-editing-the-power-settings" class="headerlink" title="Step 3 Further editing the power settings"></a>Step 3 Further editing the power settings</h4><p>Click “View” on the right hand site and edit more settings.</p>
+<img src="/2020/05/02/Power-Management-SCCM/image003.png" class="">
+
+<p>Note: These settings will take effect right after you hit apply.  </p>
+]]></content>
+      <categories>
+        <category>System Administration</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>SCCM</tag>
       </tags>
   </entry>
 </search>
